@@ -5,7 +5,7 @@ a utility tool to make structured classes specially for storing data. These clas
 
 Equality between two objects using == operator in python checks for the same memory location. Equality between DataClass objects checks for the equality of data present in it. 
 
-```py
+```python
 @dataclass
 class Box:
     x:           float
