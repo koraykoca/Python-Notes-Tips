@@ -16,11 +16,31 @@ for x, y in zip(x_list, y_list):
 ```python
 x, y = y, x
 ```
+We can also compare to tuples directly. This also works with any kind of iterable objects such as lists: 
+```python
+a = (3, 5, 2)
+b = (3, 5, 1)
+msg = 'Update available' if a > b else 'Up to date' # inline if statement (for sequence comparision)
+```
 
 - We can use __*get()*__ function when you wanna get a value of a key from a dictionary, but you are not 100% sure that that key is in the dictionary, you can return a default value for it and prevent happening the Keyerror. 
 ```python
     myValue = myDict.get('myKey', 'defaultValue') # if myKey is not in the myDict dictionary, return defaultValue
 ```
+
+We can use default dictionary from the collections package. It is pretty powerful object if we have a big dictionary. Default value is indicated by a function:
+```python
+import collections
+d = collections.defaultdict(lambda : 0)  # lambda returns always 0 as default value in this case
+d.update(myDict) # copy all the contents from myDict into the default dictionary d
+myValue = d[myKey] # if myKey doesn't exist, return 0
+
+# lambda : 0 is the same as
+def dummy():
+    return 0
+d = collections.defaultdict(dummy)
+```
+
 
 - Python for loops have an else statement. Else statement is only executed if no break statement occured during the loop. 
 ```python
@@ -65,8 +85,43 @@ finally:
     ... # execute even if the program crashes
 ```
 
+- We can use inline if statements when if-else block is not complicated.
+```python
+    value = x if x > y else y
+```
+
+- Unpacking:
+```python
+fourNumbers = [1, 2, 3, 4]
+first, _, _, last = fourNumbers
+
+hundredNumbers = [1, 2, ..., 100]
+first, *rest, last = hundredNumbers # everything in between first and last element should be captured in a variable called rest, works also with tuples
+```
+
+- Dictionary comprehensions:
+```python
+d = { key : value for key, value in zip(keyList, valueList) }
+
+# This is the same thing as
+d = {}
+for key, value in zip(keyList, valueList): # explicit for loop
+    d[key] = value
+    
+# or
+d = dict(zip(keyList, valueList)) # dict factory function
+```
+
+- The order in dictionaries in Python is not preserved. It does change all the time. Order of elements in a dictionary changes randomly. If order is important, Python has an object called __*OrderedDict*__
+```python
+import collections
+d = collections.OrderedDict() # values will be ordered starting from the smallest
+for key, value in zip(keyList, valueList):
+     d[key] = value  
+```
+
 ### __init.py__
-When importing the package, Python searches through the directories on sys.path looking for the package subdirectory.
+When importing the package, Python searches through the directories on sys.path looking for the package subdirectory. 
 ```python
 import sys
 for path in sys.path:
