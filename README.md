@@ -1,5 +1,71 @@
 # Python-Notes-Tips
 
+### Pythonic Tricks
+- __*enumerate()*__ function returns a list of indices and values in a list. Use this function if you wanna walk through a list and at the same time keep track of the positions in a list.   
+```python
+for i, val in enumerate(myList):
+    print(i, val)
+```
+
+- If you wanna walk through two lists at the same time, we can use the __*zip()*__ function. zip() function takes 2 or more lists and zips them together. We get the items which have the same index in their lists as pairs.  
+```python
+for x, y in zip(x_list, y_list):
+    print(x, y)
+```
+- To swap values, there is a trick which is particular to Python. It's actually tuple (particular Python data type) entpacking. Write just:
+```python
+x, y = y, x
+```
+
+- We can use __*get()*__ function when you wanna get a value of a key from a dictionary, but you are not 100% sure that that key is in the dictionary, you can return a default value for it and prevent happening the Keyerror. 
+```python
+    myValue = myDict.get('myKey', 'defaultValue') # if myKey is not in the myDict dictionary, return defaultValue
+```
+
+- Python for loops have an else statement. Else statement is only executed if no break statement occured during the loop. 
+```python
+for name in myList:
+    if name == 'Koray'
+    break 
+else: # if no break occured
+    print('Not Found!)
+```
+
+- We can loop directly through a file object. It's an iterator. 
+```python
+f = open('a_file.txt') # file object, better way 
+for line in f:
+    print(f)
+f.close()
+```
+We can use the __*with*__ statement when we are working with files. File is automatically closed after everything under the with statement is executed. No need to bother cleaning up. 
+```python
+with open('a_file.txt') as f: # file object, best way 
+    for line in f:
+        print(f)
+```
+
+- Try-except statements are very useful to prevent the whole program crash. We capture the error that occured, but let the program continue. 
+```python
+try: 
+    ... # try to do something
+except:
+    ... # if it didn't worked, capture the error
+else:
+    ... # if it worked (if no-except / if no exception occured)
+finally:
+    ... # Always executed regardless of whether exception occured or not  
+```
+
+finally may be necessary when you don't use except and let the program crash if an error occured, but still want to execute something as final before the program crashes, because it is executed even if an exception occured. 
+```python
+try:
+    ... # try to do something
+finally:
+    ... # execute even if the program crashes
+```
+
+### __init.py__
 When importing the package, Python searches through the directories on sys.path looking for the package subdirectory.
 ```python
 import sys
