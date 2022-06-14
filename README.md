@@ -175,3 +175,5 @@ class Box:
     orientation: float
 ```
  
+ ### Classes
+ * @staticmethod: We use them when we need some functionality not w.r.t. an Object but w.r.t. the complete class. This means, a static method can be called without creating an object for that class.
