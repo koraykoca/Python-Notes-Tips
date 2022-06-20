@@ -3,7 +3,7 @@
 ### Python Style Convention
 * Variable, Object(Instance), Module names: lowercase_underscore
 * Class names: CapWords
-* Class members names, which are used only in the class (for internal use, not for external use) (private, protected members): _private_member
+* Class member names, which are used only in the class (for internal use, not for external use) (private, protected members): _private_member
 
 ### Built-in Functions
 * type(object_name): get type of the object
@@ -24,6 +24,17 @@ class BMW(Car):
 
  * __*@staticmethod*__: We use them when we need some functionality not w.r.t. an Object but w.r.t. the complete class. This means, a static method can be called without creating an object for that class. Static methods don't take self as an argument while all other class methods take self as an argument. That's why, static method is simply basically a normal function but it is attached to a class definition. They are specifically good to implement factory functions, which generate objects from the class. 
 
+* __*@abstractmethod*__: A method whose declaration is known but body cannot be provided is called abstract method, and the class which contains at least one such abstract method is called abstract class (in C++, virtual functions does this). 
+```python
+from abc import ABC, abstractmethod
+class Shape(ABC):
+    def __init__(self, name):
+        self._name = name
+        
+    @abstractmethod
+    def draw(self):
+        pass
+```
 
 ### Pythonic Tricks
 - __*enumerate()*__ function returns a list of indices and values in a list. Use this function if you wanna walk through a list and at the same time keep track of the positions in a list.   
