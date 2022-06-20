@@ -1,5 +1,30 @@
 # Python-Notes-Tips
 
+### Python Style Convention
+* Variable, Object(Instance), Module names: lowercase_underscore
+* Class names: CapWords
+* Class members names, which are used only in the class (for internal use, not for external use) (private, protected members): _private_member
+
+### Built-in Functions
+* type(object_name): get type of the object
+* isinstance(object_name, object_type): to test type of an object
+
+### Classes 
+
+* def __init__(self): (Constructor) first function that is called when an instance of the class is created. 
+
+* super() is used to call __init__() method of inherited class. It's specifically useful when you make multiple inheritance. When you inherit from one class, using super() or calling the base class __init__() function doesn't make a difference. 
+```python
+class BMW(Car):
+    def __init__(self, model_name):
+        super().__init__(model_name) # or Car.__init__(self, model_name)  
+```
+
+* __*property*__ (attribute, instance variable, field): It's a value that is part of an object. It's kind of method, but you don't call it like function with (). With __*@property*__ decorator (Object getter (@method_name.getter) and setter (@method_name.setter) properties), we convert a class method to a property. So when we use this property, we implicitly call the related method (and show the return value).  
+
+ * __*@staticmethod*__: We use them when we need some functionality not w.r.t. an Object but w.r.t. the complete class. This means, a static method can be called without creating an object for that class. Static methods don't take self as an argument while all other class methods take self as an argument. That's why, static method is simply basically a normal function but it is attached to a class definition. They are specifically good to implement factory functions, which generate objects from the class. 
+
+
 ### Pythonic Tricks
 - __*enumerate()*__ function returns a list of indices and values in a list. Use this function if you wanna walk through a list and at the same time keep track of the positions in a list.   
 ```python
@@ -174,6 +199,3 @@ class Box:
     length:      float
     orientation: float
 ```
- 
- ### Classes
- * @staticmethod: We use them when we need some functionality not w.r.t. an Object but w.r.t. the complete class. This means, a static method can be called without creating an object for that class.
