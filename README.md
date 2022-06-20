@@ -11,7 +11,7 @@
 
 ### Classes 
 
-* def __init__(self): (Constructor) first function that is called when an instance of the class is created. 
+* def __ _init_ __ (self): (Constructor) first function that is called when an instance of the class is created. The functions which starts with double underscores are called magic functions (because they have special meaning to Python) or dunder functions (because of double underscores). 
 
 * super() is used to call __init__() method of inherited class. It's specifically useful when you make multiple inheritance. When you inherit from one class, using super() or calling the base class __init__() function doesn't make a difference. 
 ```python
@@ -35,6 +35,32 @@ class Shape(ABC):
     def draw(self):
         pass
 ```
+
+* def __ len __ (self): with this function definition, we can use len(class_instance).
+
+* def __ getitem __ (self, key): to support indexing for our object. 
+
+* def __ iter __ (self)_ to make for loop work with our object properly. It returns an iterator that allows you to loop through the object. 
+
+* def __ contains __ (self, member): to be able to use __*in*__ operator with the object correctly.  
+
+```python
+Class Numbers:
+    def __init__(self):
+        self._container = [1, 9, 2, 3]
+    def __len__(self):
+        return len(self._container)
+    def __getitem__(self, key):
+        return self._container[key]
+    def __iter__(self):
+        while self._container:
+            yield self._container.pop()
+        
+numbers_obj = Numbers()
+print(len(numbers_obj))
+```
+
+__*yield*__ is like a return statement but it doesn't end the function. It merely suspends the function, and next time the function will resume. THat's called generator function. 
 
 ### Pythonic Tricks
 - __*enumerate()*__ function returns a list of indices and values in a list. Use this function if you wanna walk through a list and at the same time keep track of the positions in a list.   
