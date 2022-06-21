@@ -109,7 +109,7 @@ for act, (nat, hit) some_dictionary.item():
         # do some stuff
        
 # instead of this, we can do this:
-for act, (nat, hit) some_dictionary.item():
+for act, (nat, hit) some_dictionary.items():  # items() method of a dictionary gives you a list of (key, value) tuples.  
     if act != x:
         continue # is act is not x, then ignore this cycle
     if nat != y:
