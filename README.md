@@ -102,9 +102,24 @@ def dummy():
     return 0
 d = collections.defaultdict(dummy)
 ```
+- with continue, we break a single loop cycle, resuming immediately with the next cycle. You can accomplish the same with nested if statements, but continue is a way to avoid your code from becoming deeply intended. 
+```python
+for act, (nat, hit) some_dictionary.item():
+    if act == x and nat == y and hit == z:
+        # do some stuff
+       
+# instead of this, we can do this:
+for act, (nat, hit) some_dictionary.item():
+    if act != x:
+        continue # is act is not x, then ignore this cycle
+    if nat != y:
+        continue
+    if hit != z:
+        continue
+    # do some stuff
+```
 
-
-- Python for loops have an else statement. Else statement is only executed if no break statement occured during the loop. 
+- Python for loops have an else statement. Else statement is only executed if no break statement occured during the loop. It can be useful if you have some kind of code that you want to execute if everything went okay. 
 ```python
 for name in myList:
     if name == 'Koray'
