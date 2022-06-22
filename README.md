@@ -168,6 +168,8 @@ finally:
 ```
 
 - Unpacking:
+
+* unpacks list, ** unpacks dictionary. 
 ```python
 fourNumbers = [1, 2, 3, 4]
 first, _, _, last = fourNumbers
