@@ -173,6 +173,15 @@ def say_hi():
 ```
 So, @my_decorator is just an easier way of saying say_hi = my_decorator(say_hi). It’s how you apply a decorator to a function.
 
+### File Path Handling
+With paths represented by strings, it is possible, but usually a bad idea, to use regular string methods. For instance, instead of joining two paths with + like regular strings, you should use os.path.join(), which joins paths using the correct path separator on the operating system. Recall that Windows uses \ while Mac and Linux use / as a separator. 
+
+A little tip for dealing with Windows paths: on Windows, the path separator is a backslash, \. However, in many contexts, backslash is also used as an escape character in order to represent non-printable characters. To avoid problems, use __*raw string literals*__ to represent Windows paths. These are string literals that have an r prepended to them. In raw string literals the \ represents a literal backslash: r'C:\Users'.
+```python
+import pathlib
+pathlib.Path(r'C:\Users\koray\python\file.txt')  # a path is explicitly created from its string representation
+```
+
 ### Pythonic Tricks
 - __*enumerate()*__ function returns a list of indices and values in a list. Use this function if you wanna walk through a list and at the same time keep track of the positions in a list.   
 ```python
