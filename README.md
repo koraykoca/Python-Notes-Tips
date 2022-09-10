@@ -39,9 +39,22 @@ Regular (instance) methods need a class instance and can access the instance thr
 
 * __*property*__ (attribute, instance variable, field): It's a value that is part of an object. It's kind of method, but you don't call it like function with (). With __*@property*__ decorator (Object getter (@method_name.getter) and setter (@method_name.setter) properties), we convert a class method to a property. So when we use this property, we implicitly call the related method (and show the return value).  
 
-* __*@classmethod*__: Class methods, marked with the @classmethod decorator, don’t need a class instance. They can’t access the instance (self) but they have access to the class itself via cls. Instead of accepting a self parameter, class methods take a cls parameter that points to the class—and not the object instance—when the method is called. Because the class method only has access to this cls argument, it can’t modify object instance state. That would require access to self. However, class methods can still modify class state that applies across all instances of the class. We can use class methods as factory functions (to create new objects from the class using cls argument as constructor). Use of class methods can also allow you to define alternative constructors for your classes. Python only allows one .__init__ method per class. Using class methods it’s possible to add as many alternative constructors as necessary. 
+* __*@classmethod*__: Class methods, marked with the @classmethod decorator, don’t need a class instance. They can’t access the instance (self) but they have access to the class itself via cls. Instead of accepting a self parameter, class methods take a cls parameter that points to the class—and not the object instance—when the method is called. Because the class method only has access to this cls argument, it can’t modify object instance state. That would require access to self. However, class methods can still modify class state that applies across all instances of the class. We can use class methods as factory functions (to create new objects from the class using cls argument as constructor). Use of class methods can also allow you __*to define alternative constructors for your classes*__. Python only allows one .__init__ method per class. Using class methods it’s possible to add as many alternative constructors as necessary. A popular convention within the Python community is to use the from preposition to name constructors that you create as class methods.
 
 * __*@staticmethod*__: Static methods, marked with the @staticmethod decorator, don’t have access to cls or self. They work like regular functions but belong to the class’s namespace. We use them when we need some functionality not w.r.t. an Object but w.r.t. the complete class. This means, a static method can be called without creating an object for that class. Static methods don't take self as an argument while all other class methods take self as an argument. That's why, static method is simply basically a normal function but it is attached to a class definition. They are specifically good to implement factory functions, which generate objects from the class. This type of method takes neither a self nor a cls parameter (but of course it’s free to accept an arbitrary number of other parameters). Therefore a static method can neither modify object state nor class state. Static methods are restricted in what data they can access - and they’re primarily a way to namespace your methods. Particular method is independent from everything else around it.
+```python
+class Circle:
+    def __init__(self, radius):
+        self.radius = radius
+        
+    @classmethod
+    def from_diameter(cls, diameter):  # its first argument receives a reference to the containing class, Circle.
+        return cls(radius=diameter/2)  # instantiate Circle by calling cls with the radius that results from the diameter argument.
+
+circle = Circle.from_diameter(84)   # construct an instance using the diameter instead of the radius
+```
+
+With this technique, you have the option to select the right name for each alternative constructor that you provide, which can make your code more readable and maintainable.
 
 * __*@abstractmethod*__: A method whose declaration is known but body cannot be provided is called abstract method, and the class which contains at least one such abstract method is called abstract class (in C++, virtual functions does this). 
 ```python
@@ -65,6 +78,8 @@ class Shape(ABC):
 
 * def __ str __ (self): When writing your own classes, it’s a good idea to have a method that returns a string containing useful information about an instance of the class (like .description()). The pythonic way of to do is using .__str()__ method. When you print(<your_object>), you will get a desription that you defined in .__str()__ method.
 
+* def __ call ___ (self): It turns the instances of the class into callable objects. In other words, you can call the instances of the class like you call any regular function.
+
 ```python
 Class Numbers:
     def __init__(self):
@@ -82,6 +97,37 @@ print(len(numbers_obj))
 ```
 
 __*yield*__ is like a return statement but it doesn't end the function. It merely suspends the function, and next time the function will resume. THat's called generator function. 
+
+### Decorators
+Decorators wrap a function, modifying its behavior.
+```python
+def my_decorator(func):  # function that takes a function reference as argument
+    def wrapper():
+        print("before function")
+        func()
+        print("after function")
+    return wrapper  # returns a function reference
+    
+def say_hi():
+    print("Hi!")
+
+say_hi = my_decorator(say_hi)  # decoration happens here, say_hi now points to the wrapper() inner function. However, wrapper() has a reference to the original say_hi() as func, and calls that function. So decorators wrap a function and modifies its behavior. If you call now say_hi(), its behaviour will be the modified one. 
+```
+
+Syntactic Sugar: The way we decorated say_hi() above is a little clunky. The decoration gets a bit hidden away below the definition of the function. Instead, Python allows you to use decorators in a simpler way with the @ symbol, sometimes called the “pie” syntax.
+```python
+def my_decorator(func):  # function that takes a function reference as argument
+    def wrapper():
+        print("before function")
+        func()
+        print("after function")
+    return wrapper  # returns a function reference
+
+@my_decorator
+def say_hi():
+    print("Hi!")
+```
+So, @my_decorator is just an easier way of saying say_hi = my_decorator(say_hi). It’s how you apply a decorator to a function.
 
 ### Pythonic Tricks
 - __*enumerate()*__ function returns a list of indices and values in a list. Use this function if you wanna walk through a list and at the same time keep track of the positions in a list.   
