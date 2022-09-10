@@ -253,3 +253,12 @@ class Box:
     length:      float
     orientation: float
 ```
+
+- Use of assert 
+when the result is False, assert returns AssertionError. If you connect the assert with comma ( , ) and string, then the string gets displayed after the error:
+```python
+assert <Expression to evaluate>, "assert message here to display when expression is False"
+# We can do simple argument check for functions with assert 
+def test_func(mode="test")
+    assert mode in ["test", "val"], "mode only takes either train or test"
+```
