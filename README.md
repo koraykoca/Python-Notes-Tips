@@ -142,6 +142,11 @@ print(len(numbers_obj))
 
 __*yield*__ is like a return statement but it doesn't end the function. It merely suspends the function, and next time the function will resume. THat's called generator function. 
 
+A python object saves its attributes in the class dictionary. We can simply update the attributes using the class dictionary. This can be handy when we assign/make equal an object to another object in the same type.
+```python
+self.__dict__.update(other_obj.__dict__)  # make self equal to other_obj
+```
+
 ### Decorators
 Decorators wrap a function, modifying its behavior.
 ```python
