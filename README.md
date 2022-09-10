@@ -9,6 +9,50 @@
 * type(object_name): get type of the object
 * isinstance(object_name, object_type): to test type of an object
 
+Function parameters: When you define a function, you use parameters. (formal parameters)
+Function arguments: When you call a function, you pass arguments (values). (actual parameters)
+
+You should always avoid using a mutable data type such as a list or a dictionary as a default value when defining a function with optional parameters.
+
+When none of the parameters in a function definition has default values, you can order the parameters in any way you wish. The same applies when all the parameters have default values. However, when you have some parameters with default values and others without, the order in which you define the parameters is important. The parameters with no default value must always come before those that have a default value.
+
+args and kwargs: It is possible to define a function that accepts any number of optional arguments. You can even define functions that accept any number of keyword arguments. Keyword arguments are arguments that have a keyword and a value associated with them.
+
+When the asterisk or star symbol ( * ) is used immediately before a sequence, it unpacks the sequence into its individual components. When a sequence such as a list is unpacked, its items are extracted and treated as individual objects. There is nothing special about the name args. It is the preceding * that gives this parameter its particular properties.  Often, it’s better to use a parameter name that suits your needs best to make the code more readable.
+```python
+part_list = {}
+def add_parts(part_list, *items_name):
+    for item_name in items_name:
+        part_list[item_name] = 1
+    return part_list
+    
+part_list = add_parts(part_list, "screw", "nut", "washer", "oil")
+```
+
+When you display the data type, you can see that item_names is a tuple. Therefore, all the additional arguments are assigned as items in the tuple item_names. You can then use this tuple within the function definition as you did in the main definition of add_items() above, in which you’re iterating through the tuple item_names using a for loop.
+
+When you define a function with parameters, you have a choice of calling the function using either non-keyword arguments or keyword arguments:
+```python
+def test_arguments(a, b):
+    pass
+
+test_arguments("BMW", "Porsche")      #  the arguments are passed by position
+test_arguments(a="BMW", b="Porsche")  #  the arguments are passed by keyword (order is not important in this type of call)
+```
+The double star ( ** ) is used to unpack items from a mapping. A mapping is a data type that has paired values as items, such as a dictionary. The double star or asterisk operates similarly to the single asterisk you used earlier to unpack items from a sequence. The parameter name kwargs is often used in function definitions, but the parameter can have any other name as long as it’s preceded by the ** operator.
+
+```python
+part_list = {}
+def add_parts(part_list, **items_to_add):
+    for item_name, quantity in items_to_add.items():
+        part_list[item_name] = quantity
+    return part_list
+    
+part_list = add_parts(part_list, screw=1, nut=2, washer=2, oil=1)
+```
+
+Earlier, you learned that args is a tuple, and the optional non-keyword arguments used in the function call are stored as items in the tuple. The optional keyword arguments are stored in a dictionary, and the keyword arguments are stored as key-value pairs in this dictionary.
+
 ### Object-Oriented Programming (OOP)
 OOP is a programming paradigm, or a specific way of designing a program. It allows us to think of the data in our program in terms of real-world objects, with both properties and behaviors. These objects can be passed around throughout our program. Properties define the state of the object. This is the data that the object stores. This data can be a built-in type like int, or even our own custom types we’ll create later. Behaviors are the actions our object can take. Oftentimes, this involves using or modifying the properties of our object.
 
