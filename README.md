@@ -387,3 +387,24 @@ assert <Expression to evaluate>, "assert message here to display when expression
 def test_func(mode="test")
     assert mode in ["test", "val"], "mode only takes either train or test"
 ```
+
+- A Singleton pattern in python is a design pattern that allows you to create just one instance of a class, throughout the lifetime of a program. True and False are singleton objects in Python, so, they are exist as only one object in the project. Check these objects with "is":
+```python
+if x is None:  # shouldn't be if x == None
+    ...
+```
+"==" checks if two objects have the same value. "is" checks of two objects are the same/identical. 
+
+- Shallow copy and Deepcopy:
+When we assign an object to another object, we don't create an object, but a reference to that object (like using & operator in C++). This is a typical failure when we manipulate similar objects. To be able to create a copy, we should explicitly indicate it.  
+```python
+x = [1, 9, 2, 3]
+y = x.copy  # only y = x would make y a reference to
+```
+
+- Don't use mutable default values as function parameters, initialize them rather as None. 
+```python
+def test(x = None):  # don't do x = [] here, otherwise you will have one list in the memory and each time you call the function, you'll always use this                          same memory address and manipulate the same object.
+if x is None:
+    x = []  # create a new empty list, so that the outputs of each function call will be independent from each other 
+```
