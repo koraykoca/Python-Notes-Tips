@@ -1,6 +1,6 @@
 # Python-Notes-Tips
 
-Everything in Python is an object, and each object is stored at a specific memory location. You can use id() to check the identity of an object.
+Everything in Python is an object (even types such as int and str.), and each object is stored at a specific memory location. It’s true on an implementation level in CPython. There is a struct (a custom data type that groups together different data types in C, it’s like a class with attributes and no methods.) called a PyObject, which every other object in CPython uses. You can use id() to check the identity of an object.
 
 ### Python Style Convention
 * Variable, Object(Instance), Module names: lowercase_underscore
@@ -124,7 +124,9 @@ Objects that have a len() will be falsy when the result of len() is 0. It doesn�
 
 * def __ contains __ (self, member): to be able to use __*in*__ operator with the object correctly.  
 
-* def __ str __ (self): When writing your own classes, it’s a good idea to have a method that returns a string containing useful information about an instance of the class (like .description()). The pythonic way of to do is using .__str()__ method. When you print(<your_object>), you will get a desription that you defined in .__str()__ method.
+* def __ repr __ (self): A useful form to express "this is everything you need to know about this instance". Use repr() (or %r formatting character, equivalently) inside __ repr __ implementation. When you run <your_object>, you will get a desription that you defined in __ repr() __ method.
+
+* def __ str __ (self): for "pretty print" functionality.  if __ repr __ is defined, and __ str __ is not, the object will behave as though __ str __ = __ repr __ . When writing your own classes, it’s a good idea to have a method that returns a string containing useful information about an instance of the class (like .description()). The pythonic way of to do is using __ str() __ method. When you run print(<your_object>), you will get a desription that you defined in __ str() __ method.
 
 * def __ call ___ (self): It turns the instances of the class into callable objects. In other words, you can call the instances of the class like you call any regular function.
 
@@ -190,6 +192,15 @@ A little tip for dealing with Windows paths: on Windows, the path separator is a
 import pathlib
 pathlib.Path(r'C:\Users\koray\python\file.txt')  # a path is explicitly created from its string representation
 ```
+
+### Memory Management
+The default Python implementation, CPython, is actually written in the C programming language. You need something to interpret written code based on the rules in the manual, and CPython interprets Python bytecode (output is .pyc file or a __pycache__ folder). You also need something to actually execute interpreted code on a computer. CPython (or other alternatives like IronPython or PyPy) fulfills both of those requirements. It converts your Python code into instructions that it then runs on a virtual machine. The memory management algorithms and structures exist in the CPython code, in C.
+
+### Big O Complexity (Average time complexity)
+O(1) means constant time. For example, appending an element to a list
+O(n) means that the average time complexity will grow along with the size e.g. of a list (traversing the whole list). For example, inserting an element at the beginning of the list or searching for a specific element.
+
+collections.deque (pronounced “deck”) uses an implementation of a linked list in which you can access, insert, or remove elements from the beginning or end of a list with constant O(1) performance.
 
 ### Pythonic Tricks
 - __*enumerate()*__ function returns a list of indices and values in a list. Use this function if you wanna walk through a list and at the same time keep track of the positions in a list.   
