@@ -124,6 +124,8 @@ Objects that have a len() will be falsy when the result of len() is 0. It doesn�
 
 * def __ contains __ (self, member): to be able to use __*in*__ operator with the object correctly.  
 
+* def __ file __ (self): returns the path relative to where the initial Python script was called. If you need the full system path, you can use os.getcwd() to get the current working directory of your executing code.
+
 * def __ repr __ (self): A useful form to express "this is everything you need to know about this instance". Use repr() (or %r formatting character, equivalently) inside __ repr __ implementation. When you run <your_object>, you will get a desription that you defined in __ repr() __ method.
 
 * def __ str __ (self): for "pretty print" functionality.  if __ repr __ is defined, and __ str __ is not, the object will behave as though __ str __ = __ repr __ . When writing your own classes, it’s a good idea to have a method that returns a string containing useful information about an instance of the class (like .description()). The pythonic way of to do is using __ str() __ method. When you run print(<your_object>), you will get a desription that you defined in __ str() __ method.
@@ -185,13 +187,15 @@ def say_hi():
 So, @my_decorator is just an easier way of saying say_hi = my_decorator(say_hi). It’s how you apply a decorator to a function.
 
 ### File Path Handling
-With paths represented by strings, it is possible, but usually a bad idea, to use regular string methods. For instance, instead of joining two paths with + like regular strings, you should use os.path.join(), which joins paths using the correct path separator on the operating system. Recall that Windows uses \ while Mac and Linux use / as a separator. 
+With paths represented by strings, it is possible, but usually a bad idea, to use regular string methods. For instance, instead of joining two paths with + like regular strings, you should use os.path.join(), which joins paths using the correct path separator on the operating system. Subsequent folders are separated by a forward slash / (Unix - Mac and Linux) or backslash \ (Windows). 
 
 A little tip for dealing with Windows paths: on Windows, the path separator is a backslash, \. However, in many contexts, backslash is also used as an escape character in order to represent non-printable characters. To avoid problems, use __*raw string literals*__ to represent Windows paths. These are string literals that have an r prepended to them. In raw string literals the \ represents a literal backslash: r'C:\Users'.
 ```python
 import pathlib
 pathlib.Path(r'C:\Users\koray\python\file.txt')  # a path is explicitly created from its string representation
 ```
+Relative path: home/koray/Desktop
+Absolute Path: home/koray/Desktop (starts with a leading /)
 
 ### Memory Management
 The default Python implementation, CPython, is actually written in the C programming language. You need something to interpret written code based on the rules in the manual, and CPython interprets Python bytecode (output is .pyc file or a __pycache__ folder). You also need something to actually execute interpreted code on a computer. CPython (or other alternatives like IronPython or PyPy) fulfills both of those requirements. It converts your Python code into instructions that it then runs on a virtual machine. The memory management algorithms and structures exist in the CPython code, in C.
@@ -275,7 +279,7 @@ for line in f:
     print(f)
 f.close()
 ```
-We can use the __*with*__ statement when we are working with files. File is automatically closed after everything under the with statement is executed. No need to bother cleaning up. 
+We can use the __*with*__ statement when we are working with files. File is automatically closed after everything under the with statement is executed. The with statement automatically takes care of closing the file once it leaves the with block, even in cases of error. No need to bother cleaning up. 
 ```python
 with open('a_file.txt') as f: # file object, best way 
     for line in f:
