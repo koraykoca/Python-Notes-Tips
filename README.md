@@ -1,5 +1,7 @@
 # Python-Notes-Tips
 
+Everything in Python is an object, and each object is stored at a specific memory location. You can use id() to check the identity of an object.
+
 ### Python Style Convention
 * Variable, Object(Instance), Module names: lowercase_underscore
 * Class names: CapWords
@@ -113,6 +115,8 @@ class Shape(ABC):
 ```
 
 * def __ len __ (self): with this function definition, we can use len(class_instance).
+
+Objects that have a len() will be falsy when the result of len() is 0. It doesn’t matter if they’re lists, tuples, sets, strings, or byte strings. 
 
 * def __ getitem __ (self, key): to support indexing for our object. 
 
@@ -324,6 +328,16 @@ for key, value in zip(keyList, valueList):
      d[key] = value  
 ```
 
+Functions and methods are always truthy. You might encounter this if a parenthesis is missing when you call a function or method. 
+```python
+    def always_false():
+        return None
+    if always_false():  # Check Function return
+        print("Never enters here")   
+    if always_false:  # Check Function object
+        print("It enters here")  
+```  
+
 ### __init.py__
 When importing the package, Python searches through the directories on sys.path looking for the package subdirectory. 
 ```python
@@ -388,18 +402,36 @@ def test_func(mode="test")
     assert mode in ["test", "val"], "mode only takes either train or test"
 ```
 
-- A Singleton pattern in python is a design pattern that allows you to create just one instance of a class, throughout the lifetime of a program. True and False are singleton objects in Python, so, they are exist as only one object in the project. Check these objects with "is":
+### "is" vs "==" operator
+A Singleton pattern in python is a design pattern that allows you to create just one instance of a class, throughout the lifetime of a program. True and False are singleton objects in Python, so, they are exist as only one object in the project (Some objects that are interned by default are None, True, False, commonly-used values (for example, the integers -5 to 256). It’s usually better to explicitly check for identity with the Python identity operator "is":
 ```python
-if x is None:  # shouldn't be if x == None
-    ...
+if x is None:  #  good practice to use the Python is operator for comparing with None by memory address than it is by using class methods (it doesn’t                       depend on the logic of any __eq__() class methods which can be overwritten). 
+    ...  #  ellipsis
 ```
-"==" checks if two objects have the same value. "is" checks of two objects are the same/identical. 
-
+As a rule of thumb, you should always use the equality operators == and !=, except when you’re comparing to None. The Python equality operator "==" checks if two objects have the same value / compares the value or equality of two objects. The identity operator "is" checks if two variables are the same/identical (point to the same object in memory/same memory address). For example, when you intern two strings with sys.intern(), you ensure that they point to the same object in memory. When you compare e.g. strings which are interned with "is", it will compare their memory addresses rather than comparing the strings character-by-character). You can use sys.intern() to optimize memory usage and comparison times for strings, although the chances are that Python already automatically handles this for you behind-the-scenes.
+ ```python   
+    from sys import intern
+    a = intern("BMW M4 is such a nice car")
+    b = intern("BMW M4 is such a nice car")
+    >>> a is b  # True
+```
+    
+In the vast majority of cases, this means you should use the equality operators == and !=, except when you’re comparing to None. Keep in mind that most of the time, different objects with the same value will be stored at separate memory addresses. This means you should not use the Python "is" operator to compare values. 
+    
+* Use the equality operators == and != if you want to check whether or not two objects have the same value, regardless of where they’re stored in memory.
+* Use the Python is and is not operators only when you want to check whether two variables point to the same memory address. 
+```python
+list1 = []
+list2 = []
+>>> list1 == list2  # True
+>>> list1 is list2  # False, they are different objects
+```
+    
 - Shallow copy and Deepcopy:
-When we assign an object to another object, we don't create an object, but a reference to that object (like using & operator in C++). This is a typical failure when we manipulate similar objects. To be able to create a copy, we should explicitly indicate it.  
+When you use the assignment operator (=) to make one variable equal to the other, you make these variables point to the same object in memory. When we assign an object to another object, we don't create an object, but a reference to that object (like using & operator in C++). This is a typical failure when we manipulate similar objects. To be able to create a copy, we should explicitly indicate it.  
 ```python
 x = [1, 9, 2, 3]
-y = x.copy  # only y = x would make y a reference to
+y = x.copy  # Both variables will have the same value, but each will be stored at a different memory address. Only y = x would make y a reference to x.
 ```
 
 - Don't use mutable default values as function parameters, initialize them rather as None. 
@@ -408,3 +440,11 @@ def test(x = None):  # don't do x = [] here, otherwise you will have one list in
 if x is None:
     x = []  # create a new empty list, so that the outputs of each function call will be independent from each other 
 ```
+Sometimes None can be useful in combination with short-circuit evaluation in order to have a default. In the case of "and" and "or", in addition to short-circuit evaluation, they also return the value at which they stopped evaluating. This can come handy when, for example, you want to give values defaults.:
+```python
+    def test(list_in=None)
+        return len(list_in or [])  # an empty list won’t be created if list_in is a non-empty list, since "or" will short-circuit before it evaluates []
+```
+This example takes advantage of the falsiness of None and the fact that or not only short-circuits but also returns the last value to be evaluated.
+    
+ 
