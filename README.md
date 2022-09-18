@@ -272,17 +272,20 @@ msg = 'Update available' if a > b else 'Up to date' # inline if statement (for s
     myValue = myDict.setdefault('myKey', 'defaultValue') # if myKey is not in the myDict dictionary, add it, then set it to defaultValue and return defaultValue
 ```
 
-We can use default dictionary from the collections package. It is pretty powerful object if we have a big dictionary. Default value is indicated by a function:
+We can use default dictionary from the collections package. It is pretty powerful object if we have a big dictionary. It extends standard dict functionality to allow you to set a default value that will be operated upon if the key doesn’t exist. Leveraging a defaultdict can lead to cleaner application code because you don’t have to worry about default values at the key level. Instead, you can handle them once at the defaultdict level and afterwards act as if the key is always present. Default value is indicated by a function:
 ```python
 import collections
 d = collections.defaultdict(lambda : 0)  # lambda returns always 0 as default value in this case
 d.update(myDict) # copy all the contents from myDict into the default dictionary d
-myValue = d[myKey] # if myKey doesn't exist, return 0
+myValue = d[myKey]  # if myKey doesn't exist, returns 0
 
 # lambda : 0 is the same as
 def dummy():
     return 0
 d = collections.defaultdict(dummy)
+
+# list() returns empty list([]). If you want to initialize values as []:
+d = collections.defaultdict(list)
 ```
 - with continue, we break a single loop cycle, resuming immediately with the next cycle. You can accomplish the same with nested if statements, but continue is a way to avoid your code from becoming deeply intended. 
 ```python
