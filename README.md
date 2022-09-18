@@ -1,13 +1,16 @@
 # Python-Notes-Tips
 
-Everything in Python is an object (even types such as int and str.), and each object is stored at a specific memory location. It’s true on an implementation level in CPython. There is a struct (a custom data type that groups together different data types in C, it’s like a class with attributes and no methods.) called a PyObject, which every other object in CPython uses. You can use id() to check the identity of an object.
+* Everything in Python is an object (even types such as int and str.), and each object is stored at a specific memory location. It’s true on an implementation level in CPython. There is a struct (a custom data type that groups together different data types in C, it’s like a class with attributes and no methods.) called a PyObject, which every other object in CPython uses. You can use id() to check the identity of an object.
+
+* REPL stands for Read, Evaluate, Print, Loop. The REPL is how you interact with the Python Interpreter. Unlike running a file containing Python code, in the REPL you can type commands and instantly see the output printed out. To start the REPL in VS code, open the command palette and search for and select “Start REPL”. If you’d like to start the REPL from the command line outside of the editor, type python in your shell. 
+>>> - this is the prompt. In example code, lines starting with >>> means they are input.
 
 ### Python Style Convention
 * Variable, Object(Instance), Module names: lowercase_underscore
 * Class names: CapWords
 * Class member names, which are used only in the class (for internal use, not for external use) (private, protected members): _private_member
 
-### Built-in Functions
+### Built-in Functions, Data Structures
 * type(object_name): get type of the object
 * isinstance(object_name, object_type): to test type of an object
 
@@ -54,6 +57,21 @@ part_list = add_parts(part_list, screw=1, nut=2, washer=2, oil=1)
 ```
 
 Earlier, you learned that args is a tuple, and the optional non-keyword arguments used in the function call are stored as items in the tuple. The optional keyword arguments are stored in a dictionary, and the keyword arguments are stored as key-value pairs in this dictionary.
+
+Generally, lists are for looping; tuples for structs. Lists are homogeneous; tuples heterogeneous. Lists for variable length. 
+A tuple is an iterable and seems like simply a immutable list, it's really the Python equivalent of a C struct:
+```c
+struct{
+    int a;
+    char b;
+    float c;
+} foo;
+
+struct foo x = { 9, 'k', 5.3 };
+```
+```python
+x = (9, 'k', 5.3)
+```
 
 ### Object-Oriented Programming (OOP)
 OOP is a programming paradigm, or a specific way of designing a program. It allows us to think of the data in our program in terms of real-world objects, with both properties and behaviors. These objects can be passed around throughout our program. Properties define the state of the object. This is the data that the object stores. This data can be a built-in type like int, or even our own custom types we’ll create later. Behaviors are the actions our object can take. Oftentimes, this involves using or modifying the properties of our object.
@@ -148,7 +166,7 @@ numbers_obj = Numbers()
 print(len(numbers_obj))
 ```
 
-__*yield*__ is like a return statement but it doesn't end the function. It merely suspends the function, and next time the function will resume. THat's called generator function. 
+__*yield*__ is like a return statement but it doesn't end the function. It merely suspends the function, and next time the function will resume. That's called generator function. When the Python yield statement is hit, the program suspends function execution and returns the yielded value to the caller. (In contrast, return stops function execution completely.) When a function is suspended, the state of that function is saved. This includes any variable bindings local to the generator, the instruction pointer, the internal stack, and any exception handling. This allows you to resume function execution whenever you call one of the generator’s methods. In this way, all function evaluation picks back up right after yield.
 
 A python object saves its attributes in the class dictionary. We can simply update the attributes using the class dictionary. This can be handy when we assign/make equal an object to another object in the same type.
 ```python
@@ -189,7 +207,7 @@ So, @my_decorator is just an easier way of saying say_hi = my_decorator(say_hi).
 ### File Path Handling
 With paths represented by strings, it is possible, but usually a bad idea, to use regular string methods. For instance, instead of joining two paths with + like regular strings, you should use os.path.join(), which joins paths using the correct path separator on the operating system. Subsequent folders are separated by a forward slash / (Unix - Mac and Linux) or backslash \ (Windows). 
 
-A little tip for dealing with Windows paths: on Windows, the path separator is a backslash, \. However, in many contexts, backslash is also used as an escape character in order to represent non-printable characters. To avoid problems, use __*raw string literals*__ to represent Windows paths. These are string literals that have an r prepended to them. In raw string literals the \ represents a literal backslash: r'C:\Users'.
+The objects returned by pathlib.Path are either PosixPath or WindowsPath objects depending on the OS. pathlib.Path() objects have an .iterdir() method for creating an iterator of all files and folders in a directory. A little tip for dealing with Windows paths: on Windows, the path separator is a backslash, \. However, in many contexts, backslash is also used as an escape character in order to represent non-printable characters. To avoid problems, use __*raw string literals*__ to represent Windows paths. These are string literals that have an r prepended to them. In raw string literals the \ represents a literal backslash: r'C:\Users'.
 ```python
 import pathlib
 pathlib.Path(r'C:\Users\koray\python\file.txt')  # a path is explicitly created from its string representation
@@ -279,7 +297,7 @@ for line in f:
     print(f)
 f.close()
 ```
-We can use the __*with*__ statement when we are working with files. File is automatically closed after everything under the with statement is executed. The with statement automatically takes care of closing the file once it leaves the with block, even in cases of error. No need to bother cleaning up. 
+We can use the __*with*__ statement (when we are working with files. The with statement initiates a context manager. The context manager opens the file and manages the file resource as long as the context is active. File is automatically closed after everything under the with statement is executed or an exception raised. The with statement automatically takes care of closing the file once it leaves the with block, even in cases of error. No need to bother cleaning up. 
 ```python
 with open('a_file.txt') as f: # file object, best way 
     for line in f:
@@ -352,6 +370,8 @@ Functions and methods are always truthy. You might encounter this if a parenthes
     if always_false:  # Check Function object
         print("It enters here")  
 ```  
+
+ - List comprehensions return full lists, while generator expressions return generators. Unlike lists, lazy iterators do not store their contents in memory, so generators are a great way to optimize memory. However, if speed is an issue and memory isn’t, then a list comprehension is likely a better tool for the job than a generator. Generator expressions are often slower than list comprehensions because of the overhead of function calls (next()). 
 
 ### __init.py__
 When importing the package, Python searches through the directories on sys.path looking for the package subdirectory. 
