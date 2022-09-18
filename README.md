@@ -225,11 +225,12 @@ O(n) means that the average time complexity will grow along with the size e.g. o
 collections.deque (pronounced “deck”) uses an implementation of a linked list in which you can access, insert, or remove elements from the beginning or end of a list with constant O(1) performance.
 
 ### Pythonic Tricks
-- __*enumerate()*__ function returns a list of indices and values in a list. Use this function if you wanna walk through a list and at the same time keep track of the positions in a list.   
+- __*enumerate()*__ function returns a list of indices and values in a list. Use this function if you wanna walk through a list and at the same time keep track of the positions in a list. You can start your count at an offset using the optional "start" parameter:  
 ```python
-for i, val in enumerate(myList):
+for i, val in enumerate(myList, start=10):
     print(i, val)
 ```
+By using the start parameter, we access all of the elements, starting with the first index, but now our count starts from the specified integer value.
 
 - If you wanna walk through two lists at the same time, we can use the __*zip()*__ function. zip() function takes 2 or more lists and zips them together. We get the items which have the same index in their lists as pairs.  
 ```python
@@ -338,6 +339,21 @@ first, _, _, last = fourNumbers
 
 hundredNumbers = [1, 2, ..., 100]
 first, *rest, last = hundredNumbers # everything in between first and last element should be captured in a variable called rest, works also with tuples
+```
+
+- List comprehensions instead of map() and filter():
+Python supports list comprehensions, which are often easier to read and support the same functionality as map() and filter().
+```python
+map() and its equivalent list comprehension
+my_list = [-5, 4, -3, 2]
+l1 = [abs(x) for x in my_list]
+l2 = list(map(abs, my_list))
+>>> l1 == l2  # returns True
+
+# filter() and its equivalent list comprehension
+l1f = [x for x in my_list if x>0]
+l2f = list(filter(lambda x: x>0, my_list))
+>>> l1f == l2f  # returns True
 ```
 
 - Dictionary comprehensions:
