@@ -3,7 +3,7 @@
 * Everything in Python is an object (even types such as int and str.), and each object is stored at a specific memory location. It’s true on an implementation level in CPython. There is a struct (a custom data type that groups together different data types in C, it’s like a class with attributes and no methods.) called a PyObject, which every other object in CPython uses. You can use id() to check the identity of an object.
 
 * REPL stands for Read, Evaluate, Print, Loop. The REPL is how you interact with the Python Interpreter. Unlike running a file containing Python code, in the REPL you can type commands and instantly see the output printed out. To start the REPL in VS code, open the command palette and search for and select “Start REPL”. If you’d like to start the REPL from the command line outside of the editor, type python in your shell. 
->>> - this is the prompt. In example code, lines starting with >>> means they are input.
+">>>" is the prompt. In example code, lines starting with >>> means they are input.
 
 ### Python Style Convention
 * Variable, Object(Instance), Module names: lowercase_underscore
