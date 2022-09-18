@@ -1,6 +1,6 @@
 # Python-Notes-Tips
 
-* Everything in Python is an object (even types such as int and str.), and each object is stored at a specific memory location. It’s true on an implementation level in CPython. There is a struct (a custom data type that groups together different data types in C, it’s like a class with attributes and no methods.) called a PyObject, which every other object in CPython uses. You can use id() to check the identity of an object.
+* Everything in Python is an object (even types such as int and str.), and each object is stored at a specific memory location. This is true on an implementation level in CPython. Every value assigned to a variable in Python exists as an object on the heap. It takes time to allocate these objects because our memory manager needs to do work. When an integer is assigned to a variable in Python, a corresponding PyObject needs to exist on the heap.  There is a struct (a custom data type that groups together different data types in C, it’s like a class with attributes and no methods) called a PyObject, which every other object in CPython uses. You can use id() to check the identity of an object.
 
 * REPL stands for Read, Evaluate, Print, Loop. The REPL is how you interact with the Python Interpreter. Unlike running a file containing Python code, in the REPL you can type commands and instantly see the output printed out. To start the REPL in VS code, open the command palette and search for and select “Start REPL”. If you’d like to start the REPL from the command line outside of the editor, type python in your shell. 
 ">>>" is the prompt. In example code, lines starting with >>> means they are input.
@@ -482,7 +482,7 @@ A Singleton pattern in python is a design pattern that allows you to create just
 if x is None:  #  good practice to use the Python is operator for comparing with None by memory address than it is by using class methods (it doesn’t                       depend on the logic of any __eq__() class methods which can be overwritten). 
     ...  #  ellipsis
 ```
-As a rule of thumb, you should always use the equality operators == and !=, except when you’re comparing to None. The Python equality operator "==" checks if two objects have the same value / compares the value or equality of two objects. The identity operator "is" checks if two variables are the same/identical (point to the same object in memory/same memory address). For example, when you intern two strings with sys.intern(), you ensure that they point to the same object in memory. When you compare e.g. strings which are interned with "is", it will compare their memory addresses rather than comparing the strings character-by-character). You can use sys.intern() to optimize memory usage and comparison times for strings, although the chances are that Python already automatically handles this for you behind-the-scenes.
+As a rule of thumb, you should always use the equality operators == and !=, except when you’re comparing to None. The Python equality operator "==" checks if two objects have the same value / compares the value or equality of two objects. The identity operator "is" checks if two variables are the same/identical (point to the same object in memory/same memory address). At a higher level, comparing objects using "is" can be likened to comparing the location of the objects in the heap. For example, when you intern two strings with sys.intern(), you ensure that they point to the same object in memory. When you compare e.g. strings which are interned with "is", it will compare their memory addresses rather than comparing the strings character-by-character). You can use sys.intern() to optimize memory usage and comparison times for strings, although the chances are that Python already automatically handles this for you behind-the-scenes.
  ```python   
     from sys import intern
     a = intern("BMW M4 is such a nice car")
@@ -490,7 +490,7 @@ As a rule of thumb, you should always use the equality operators == and !=, exce
     >>> a is b  # True
 ```
     
-In the vast majority of cases, this means you should use the equality operators == and !=, except when you’re comparing to None. Keep in mind that most of the time, different objects with the same value will be stored at separate memory addresses. This means you should not use the Python "is" operator to compare values. 
+In the vast majority of cases, this means you should use the equality operators == and !=, except when you’re comparing to None. Keep in mind that most of the time, different objects with the same value will be stored at separate memory addresses. This means you should not use the Python "is" operator to compare values. Everything is an object in Python, so be careful when using is to compare.
     
 * Use the equality operators == and != if you want to check whether or not two objects have the same value, regardless of where they’re stored in memory.
 * Use the Python is and is not operators only when you want to check whether two variables point to the same memory address. 
