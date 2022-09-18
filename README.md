@@ -11,6 +11,8 @@
 * Class member names, which are used only in the class (for internal use, not for external use) (private, protected members): _private_member
 
 ### Built-in Functions, Data Structures
+* [Python’s Standard Library:](https://docs.python.org/3/library/functions.html) By default, Python comes with a lot of functionality that’s just an import statement away. 
+
 * type(object_name): get type of the object
 * isinstance(object_name, object_type): to test type of an object
 
@@ -71,6 +73,18 @@ struct foo x = { 9, 'k', 5.3 };
 ```
 ```python
 x = (9, 'k', 5.3)
+```
+
+- By default, sorted() has sorted the input in ascending order, and the reverse keyword argument causes it to sort in descending order. It’s worth knowing about the optional keyword argument key that lets you specify a function (usually lambda) that will be called on every element prior to sorting. Adding a function allows custom sorting rules, which are especially helpful if you want to sort more complex data types e.g. dictionaries:
+```python
+cars = [{"Car": "Pagani", "power": 850},
+        {"Car": "Porsche", "power": 450},
+        {"Car": "BMW", "power": 250},
+        {"Car": "Ferrari", "power": 650},]
+print(sorted(cars, key=lambda dl: dl["power"], reverse=True))
+
+cars_d = {"Pagani": 850, "BMW": 250, "Ferrari": 650, "Porsche": 450}
+print(sorted(cars_d.items(), key=lambda x:x[-1]))
 ```
 
 ### Object-Oriented Programming (OOP)
@@ -218,11 +232,12 @@ Absolute Path: home/koray/Desktop (starts with a leading /)
 ### Memory Management
 The default Python implementation, CPython, is actually written in the C programming language. You need something to interpret written code based on the rules in the manual, and CPython interprets Python bytecode (output is .pyc file or a __pycache__ folder). You also need something to actually execute interpreted code on a computer. CPython (or other alternatives like IronPython or PyPy) fulfills both of those requirements. It converts your Python code into instructions that it then runs on a virtual machine. The memory management algorithms and structures exist in the CPython code, in C.
 
-### Big O Complexity (Average time complexity)
-O(1) means constant time. For example, appending an element to a list
-O(n) means that the average time complexity will grow along with the size e.g. of a list (traversing the whole list). For example, inserting an element at the beginning of the list or searching for a specific element.
+### Big O Complexity (Average required time complexity)
+* O(1) means constant time. For example, appending an element to a list, getting an element with an index, search an element in a set
+* O(n) means that the average time complexity will grow along with the size e.g. of a list (traversing the whole list,  all elements must be once considered). For example, inserting an element at the beginning of the list, searching for a specific element, summing all elements, just for loop itself (for i in range(n)).
+O(n^2) means that as the number of elements grows, the number of lookups grows quadratically (time complexity grows on the order of O(N²)). For example,  two nested for loops, if-elif-else (O(1)-O(n)-O(n^2)) block.
 
-collections.deque (pronounced “deck”) uses an implementation of a linked list in which you can access, insert, or remove elements from the beginning or end of a list with constant O(1) performance.
+- collections.deque (pronounced “deck”) uses an implementation of a linked list in which you can access, insert, or remove elements from the beginning or end of a list with constant O(1) performance.
 
 ### Pythonic Tricks
 - __*enumerate()*__ function returns a list of indices and values in a list. Use this function if you wanna walk through a list and at the same time keep track of the positions in a list. You can start your count at an offset using the optional "start" parameter:  
@@ -251,6 +266,10 @@ msg = 'Update available' if a > b else 'Up to date' # inline if statement (for s
 - We can use __*get()*__ function when you wanna get a value of a key from a dictionary, but you are not 100% sure that that key is in the dictionary, you can return a default value for it and prevent happening the Keyerror. 
 ```python
     myValue = myDict.get('myKey', 'defaultValue') # if myKey is not in the myDict dictionary, return defaultValue
+```
+- We can use __*setdefault*__ function when you want to update the dictionary with a default value. It checks if the key exists in the dictionary, and if so it returns that value. Otherwise, it sets key to the given value and returns the new value.
+```python
+    myValue = myDict.setdefault('myKey', 'defaultValue') # if myKey is not in the myDict dictionary, add it, then set it to defaultValue and return defaultValue
 ```
 
 We can use default dictionary from the collections package. It is pretty powerful object if we have a big dictionary. Default value is indicated by a function:
@@ -356,6 +375,9 @@ l2f = list(filter(lambda x: x>0, my_list))
 >>> l1f == l2f  # returns True
 ```
 
+ - List comprehensions return full lists, while generator expressions return generators. Unlike lists, lazy iterators do not store their contents in memory, so generators are a great way to optimize memory. However, if speed is an issue and memory isn’t, then a list comprehension is likely a better tool for the job than a generator. Generator expressions are often slower than list comprehensions because of the overhead of function calls (next()). 
+Generator expressions are perfect for when you know you want to retrieve data from a sequence, but you don’t need to access all of it at the same time. The design allows generators to be used on massive sequences of data, because only one element exists in memory at a time.
+
 - Dictionary comprehensions:
 ```python
 d = { key : value for key, value in zip(keyList, valueList) }
@@ -386,8 +408,6 @@ Functions and methods are always truthy. You might encounter this if a parenthes
     if always_false:  # Check Function object
         print("It enters here")  
 ```  
-
- - List comprehensions return full lists, while generator expressions return generators. Unlike lists, lazy iterators do not store their contents in memory, so generators are a great way to optimize memory. However, if speed is an issue and memory isn’t, then a list comprehension is likely a better tool for the job than a generator. Generator expressions are often slower than list comprehensions because of the overhead of function calls (next()). 
 
 ### __init.py__
 When importing the package, Python searches through the directories on sys.path looking for the package subdirectory. 
