@@ -234,7 +234,7 @@ The default Python implementation, CPython, is actually written in the C program
 
 ### Big O Complexity (Average required time complexity)
 * O(1) means constant time. For example, appending an element to a list, getting an element with an index, search an element in a set
-* O(n) means that the average time complexity will grow along with the size e.g. of a list (traversing the whole list,  all elements must be once considered). For example, inserting an element at the beginning of the list, searching for a specific element, summing all elements, just for loop itself (for i in range(n)).
+* O(n) means that the average time complexity will grow along with the size e.g. of a list (traversing the whole list,  all elements must be once considered). For example, inserting an element at the beginning of the list, searching for a specific element (index()), summing all elements(sum()), just for loop itself (for i in range(n)).
 O(n^2) means that as the number of elements grows, the number of lookups grows quadratically (time complexity grows on the order of O(N²)). For example,  two nested for loops, if-elif-else (O(1)-O(n)-O(n^2)) block.
 
 - collections.deque (pronounced “deck”) uses an implementation of a linked list in which you can access, insert, or remove elements from the beginning or end of a list with constant O(1) performance.
@@ -508,7 +508,7 @@ x = [1, 9, 2, 3]
 y = x.copy  # Both variables will have the same value, but each will be stored at a different memory address. Only y = x would make y a reference to x.
 ```
 
-- Don't use mutable default values as function parameters, initialize them rather as None. 
+- Don't use mutable default values as function parameters, initialize them rather as None. Python’s default arguments are evaluated once when the function is defined, not each time the function is called.  This means that if you use a mutable default argument and mutate it (e. g. a list), you will and have mutated that object for all future calls to the function as well. Create a new list each time the function is called, by using a default arg to signal that no argument was provided (None is a good choice):
 ```python
 def test(x = None):  # don't do x = [] here, otherwise you will have one list in the memory and each time you call the function, you'll always use this                          same memory address and manipulate the same object.
 if x is None:
