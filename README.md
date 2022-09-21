@@ -5,6 +5,10 @@
 * REPL stands for Read, Evaluate, Print, Loop. The REPL is how you interact with the Python Interpreter. Unlike running a file containing Python code, in the REPL you can type commands and instantly see the output printed out. To start the REPL in VS code, open the command palette and search for and select “Start REPL”. If you’d like to start the REPL from the command line outside of the editor, type python in your shell. 
 ">>>" is the prompt. In example code, lines starting with >>> means they are input.
 
+* if __name__ == '__main__':
+It's a check if this file is being run directly by Python or it is being imported. If we run the script directly, run the code under this conditional. If we import this module, doesn't run it "implicitly" (otherwise every module we imported would be run by Python automatically because we imported it). Whenever Python runs a file, it first sets a few special variables before even runs any code, and __ _name_ __ is one of those special variables. When Python runs a pyhton file directly, it sets __ _name_ __ == __ _main_ __ . When we import a module, Python sets __ _name_ __ to the name of the file. 
+
+
 ### Python Style Convention
 * Variable, Object(Instance), Module names: lowercase_underscore
 * Class names: CapWords
@@ -85,6 +89,26 @@ print(sorted(cars, key=lambda dl: dl["power"], reverse=True))
 
 cars_d = {"Pagani": 850, "BMW": 250, "Ferrari": 650, "Porsche": 450}
 print(sorted(cars_d.items(), key=lambda x:x[-1]))
+```
+
+- requests library: It allows us to make http requests to get information from websites. For example, requests.get is used to go to a website and pull down the required informations from the website. If it returns ok, then we can get the information with text() method:
+```python
+import requests
+def get_info():
+    response = requests.get(f"<url>")   
+    if response.ok:  # response.status_code < 400 responses
+        return response.text  # content of the response, in unicode
+    else:
+        return "Bad Response"
+```
+To test the library, there is [this website](http://httpbin.org/) from the developer of the library. 
+
+Python has JSON (JavaScript Object Notation) standard library. JSON is very common data format for storing some Information. JSON is used a lot when fetching data from online APIs. It can also be used for configuration files. [It's very similar to Python dictionary.](https://docs.python.org/3/library/json.html#encoders-and-decoders) 
+```python
+import json
+
+load(), loads() -> to get Python object (dictionary) from JSON object
+dump(), dumps() -> convert from Python object to JSON object
 ```
 
 ### Object-Oriented Programming (OOP)
@@ -228,6 +252,13 @@ pathlib.Path(r'C:\Users\koray\python\file.txt')  # a path is explicitly created 
 ```
 Relative path: home/koray/Desktop
 Absolute Path: home/koray/Desktop (starts with a leading /)
+
+* Import modules: When we import a module, Python checks multiple locations and location that it checks is within a list called sys.path. We can see this list:
+```python
+import sys
+print(sys.path)
+```
+First element is the directory containing the script that we are running, so you can always import modules from the same directory. We can append directories to this list with sys.path.append(). The better way is adding the directory to Python path environment variable (PYTHONPATH). 
 
 ### Memory Management
 The default Python implementation, CPython, is actually written in the C programming language. You need something to interpret written code based on the rules in the manual, and CPython interprets Python bytecode (output is .pyc file or a __pycache__ folder). You also need something to actually execute interpreted code on a computer. CPython (or other alternatives like IronPython or PyPy) fulfills both of those requirements. It converts your Python code into instructions that it then runs on a virtual machine. The memory management algorithms and structures exist in the CPython code, in C.
