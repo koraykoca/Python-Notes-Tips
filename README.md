@@ -104,12 +104,10 @@ def get_info():
 To test the library, there is [this website](http://httpbin.org/) from the developer of the library. 
 
 Python has JSON (JavaScript Object Notation) standard library. JSON is very common data format for storing some Information. JSON is used a lot when fetching data from online APIs. It can also be used for configuration files. [It's very similar to Python dictionary.](https://docs.python.org/3/library/json.html#encoders-and-decoders) 
-```python
-import json
 
 load(), loads() -> to get Python object (dictionary) from JSON object
+
 dump(), dumps() -> convert from Python object to JSON object
-```
 
 ### Object-Oriented Programming (OOP)
 OOP is a programming paradigm, or a specific way of designing a program. It allows us to think of the data in our program in terms of real-world objects, with both properties and behaviors. These objects can be passed around throughout our program. Properties define the state of the object. This is the data that the object stores. This data can be a built-in type like int, or even our own custom types we’ll create later. Behaviors are the actions our object can take. Oftentimes, this involves using or modifying the properties of our object.
@@ -117,6 +115,8 @@ OOP is a programming paradigm, or a specific way of designing a program. It allo
 Custom objects are mutable by default. An object is mutable if it can be altered dynamically. For example, lists and dictionaries are mutable, but strings and tuples are immutable.
 
 ### Classes 
+
+Aristotle once said, "Knowing self is the beginning of all wisdom."
 
 * def __ _init_ __ (self): (Constructor) first function that is called when an instance of the class is created. The functions which starts with double underscores are called magic functions (because they have special meaning to Python) or dunder functions (because of double underscores). The properties that all class objects must have are defined in this method. Every time a new object of the class is created, .__init__() sets the initial state of the object by assigning the values of the object’s properties. That is, .__init__() initializes each new instance of the class.
 
