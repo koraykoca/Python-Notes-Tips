@@ -552,4 +552,7 @@ Sometimes None can be useful in combination with short-circuit evaluation in ord
 ```
 This example takes advantage of the falsiness of None and the fact that or not only short-circuits but also returns the last value to be evaluated.
     
- 
+### Type/Function Annotations
+When a function parameter can be one of several types, we can use Union (also called a sum type). For example, Union[int, str] means it could be an int; or it could be a str; but it cannot be a float, or a list, or another dict, or anything other than an int or str.
+
+When a function returns multiple values, we can use Tuple. For example, -> Tuple[bool, str] means function returns a bool and a string (as tuple, actually, you are always returning one object). 
