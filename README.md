@@ -6,7 +6,7 @@
 ">>>" is the prompt. In example code, lines starting with >>> means they are input.
 
 * if __name__ == '__main__':
-It's a check if this file is being run directly by Python or it is being imported. If we run the script directly, run the code under this conditional. If we import this module, doesn't run it "implicitly" (otherwise every module we imported would be run by Python automatically because we imported it). Whenever Python runs a file, it first sets a few special variables before even runs any code, and __ _name_ __ is one of those special variables. When Python runs a pyhton file directly, it sets __ _name_ __ == __ _main_ __ . When we import a module, Python sets __ _name_ __ to the name of the file. 
+It's a check if this file is being run directly by Python or it is being imported. If we run the script directly, run the code under this conditional. If we import this module, doesn't run it "implicitly" (otherwise every module we imported would be run by Python automatically because we imported it). Whenever Python runs a file, it first sets a few special variables before even runs any code, and __ name __ is one of those special variables. When Python runs a pyhton file directly, it sets __ name __ == __ main __. When we import a module, Python sets __ name __ to the name of the file. 
 
 
 ### Python Style Convention
@@ -117,33 +117,46 @@ Custom objects are mutable by default. An object is mutable if it can be altered
 ### Classes 
 
 Aristotle once said, "Knowing self is the beginning of all wisdom."
+```python
+class BMW:
+    def get_power(self):
+        pass
+        
+car = BMW()
+#  following two lines do the exact same thing
+car.get_power() # instance (car = self) is getting passed automatically as the first argument in regular class methods
+BMW.get_power(car)  # we need to pass the instance to the function manually
+```
 
-* def __ _init_ __ (self): (Constructor) first function that is called when an instance of the class is created. The functions which starts with double underscores are called magic functions (because they have special meaning to Python) or dunder functions (because of double underscores). The properties that all class objects must have are defined in this method. Every time a new object of the class is created, .__init__() sets the initial state of the object by assigning the values of the object’s properties. That is, .__init__() initializes each new instance of the class.
+* def __ init __ (self): (Constructor) first function that is called when an instance of the class is created. The functions which starts with double underscores are called magic functions (because they have special meaning to Python) or dunder functions (because of double underscores). The properties that all class objects must have are defined in this method. Every time a new object of the class is created, __ init __() sets the initial state of the object by assigning the values of the object’s properties. That is, __ init __() initializes each new instance of the class.
 
-* Instance attributes: Attributes created in .__init__() are called instance attributes. An instance attribute’s value is specific to a particular instance of the class. 
-* Class attributes: Attributes that have the same value for all class instances. We can define a class attribute by assigning a value to a variable name outside of .__init__(). Class attributes are defined directly beneath the first line of the class name and are indented by four spaces. They must always be assigned an initial value. When an instance of the class is created, class attributes are automatically created and assigned to their initial values.
+* Instance attributes: Attributes created in __ init __() are called instance attributes. An instance attribute’s value is specific to a particular instance of the class. 
+* Class attributes: Attributes that have the same value for all class instances. We can define a class attribute by assigning a value to a variable name outside of __ init __() (usually before of it). Class attributes are defined directly beneath the first line of the class name and are indented by four spaces. They must always be assigned an initial value. When an instance of the class is created, class attributes are automatically created and assigned to their initial values. When we want to access a class attribute in a method, we need to either access it through the class itself (class namespace) or an instance of the class (self). Accessing with self is generally preferrable because that will give us the ability to change the value of the class attribute for a single instance (overwriting). However, if you want a variable have the same value for all instances of the class, then you should access it through class itself, instead of self. 
 ```python
 class BMW:
     car_brand = "BMW"  # class attribute
     def __init__(self, color):
-        self.color = color  # instance attribute      
+        self.color = color  # instance attribute     
+    def show_brand(self):
+        print(f"Brand is: {self.car_brand}")  # accessing with self
 ```
 
 Use class attributes to define properties that should have the same value for every class instance. Use instance attributes for properties that vary from one instance to another. Use attributes and methods to define the properties and behaviors of an object.
 
-* You can access the parent class from inside a method of a child class by using super(). super() searches the parent class for a method or an attribute. For example, you can use super() to call __init__() method or any other method of inherited class. It's specifically useful when you make multiple inheritance. When you inherit from one class, using super() or calling the base class __init__() function doesn't make a difference. 
+* You can access the parent class from inside a method of a child class by using super(). super() searches the parent class for a method or an attribute. For example, you can use super() to call __ init __() method or any other method of inherited class. It's specifically useful when you make multiple inheritance. When you inherit from one class, using super() or calling the base class __ init __() function doesn't make a difference. 
 ```python
 class BMW(Car):
     def __init__(self, model_name):
         super().__init__(model_name) # or Car.__init__(self, model_name)  
 ```
+
 Regular (instance) methods need a class instance and can access the instance through self. They can read and modify an objects state freely. Class methods don’t need a class instance. They can’t access the instance (self) but they have access to the class itself via cls. Static methods don’t have access to cls or self. They work like regular functions but belong to the class’s namespace.
 
 * __*property*__ (attribute, instance variable, field): It's a value that is part of an object. It's kind of method, but you don't call it like function with (). With __*@property*__ decorator (Object getter (@method_name.getter) and setter (@method_name.setter) properties), we convert a class method to a property. So when we use this property, we implicitly call the related method (and show the return value).  
 
-* __*@classmethod*__: Class methods, marked with the @classmethod decorator, don’t need a class instance. They can’t access the instance (self) but they have access to the class itself via cls. Instead of accepting a self parameter, class methods take a cls parameter that points to the class—and not the object instance—when the method is called. Because the class method only has access to this cls argument, it can’t modify object instance state. That would require access to self. However, class methods can still modify class state that applies across all instances of the class. We can use class methods as factory functions (to create new objects from the class using cls argument as constructor). Use of class methods can also allow you __*to define alternative constructors for your classes*__. Python only allows one .__init__ method per class. Using class methods it’s possible to add as many alternative constructors as necessary. A popular convention within the Python community is to use the from preposition to name constructors that you create as class methods.
+* __*@classmethod*__: Class methods, marked with the @classmethod decorator, don’t need a class instance. They can’t access the instance (self) but they have access to the class itself via cls. Instead of accepting a self parameter (instance of the class), class methods take a cls parameter (class itself) that points to the class, and not the object/instance of the class, when the method is called. This is useful when we want to work with class attributes/variables. It's common to run class methods from class itself, not from instances. Since the class method only has access to this cls argument, it can’t modify object instance state. That would require access to self. However, class methods can still modify class state that applies across all instances of the class. 
 
-* __*@staticmethod*__: Static methods, marked with the @staticmethod decorator, don’t have access to cls or self. They work like regular functions but belong to the class’s namespace. We use them when we need some functionality not w.r.t. an Object but w.r.t. the complete class. This means, a static method can be called without creating an object for that class. Static methods don't take self as an argument while all other class methods take self as an argument. That's why, static method is simply basically a normal function but it is attached to a class definition. They are specifically good to implement factory functions, which generate objects from the class. This type of method takes neither a self nor a cls parameter (but of course it’s free to accept an arbitrary number of other parameters). Therefore a static method can neither modify object state nor class state. Static methods are restricted in what data they can access - and they’re primarily a way to namespace your methods. Particular method is independent from everything else around it.
+We can use class methods as factory functions (to create new objects from the class using cls argument as constructor). Use of class methods can also allow you __*to define alternative constructors for your classes*__. Python only allows one __ init __ method per class. Using class methods it’s possible to add as many alternative constructors as necessary. A popular convention within the Python community is to use the from preposition to name constructors that you create as class methods.
 ```python
 class Circle:
     def __init__(self, radius):
@@ -151,12 +164,15 @@ class Circle:
         
     @classmethod
     def from_diameter(cls, diameter):  # its first argument receives a reference to the containing class, Circle.
-        return cls(radius=diameter/2)  # instantiate Circle by calling cls with the radius that results from the diameter argument.
-
+        return cls(radius=diameter/2)  # instantiate Circle by calling cls (cls = Circle, actually) with the radius 
+                                         that results from the diameter argument.
+                                         
 circle = Circle.from_diameter(84)   # construct an instance using the diameter instead of the radius
 ```
 
 With this technique, you have the option to select the right name for each alternative constructor that you provide, which can make your code more readable and maintainable.
+
+* __*@staticmethod*__: Static methods, marked with the @staticmethod decorator, don’t have access to cls or self. They work like regular functions but belong to the class’s namespace, because they have some logical connection with the class. We use them when we need some functionality not w.r.t. an object but w.r.t. the complete class. This means, a static method can be called without creating an object for that class. Static methods don't take self as an argument while all other class methods take self as an argument. That's why, static method is simply basically a normal function but it is attached to a class definition. They are specifically good to implement factory functions, which generate objects from the class. This type of method takes neither a self nor a cls parameter (but of course it’s free to accept an arbitrary number of other parameters). Therefore a static method can neither modify object state nor class state. Static methods are restricted in what data they can access - and they’re primarily a way to namespace your methods. Particular method is independent from everything else around it. If you don't access the instance or the class anywhere within the method, then it would be appropriate to make it static method.   
 
 * __*@abstractmethod*__: A method whose declaration is known but body cannot be provided is called abstract method, and the class which contains at least one such abstract method is called abstract class (in C++, virtual functions does this). 
 ```python
@@ -188,6 +204,11 @@ Objects that have a len() will be falsy when the result of len() is 0. It doesn�
 
 * def __ call ___ (self): It turns the instances of the class into callable objects. In other words, you can call the instances of the class like you call any regular function.
 
+* __ dict __: A python object saves its attributes in the class dictionary (namespace of the instance). We can simply update the attributes using the class dictionary. This can be handy when we assign/make equal an object to another object in the same type.
+```python
+self.__dict__.update(other_obj.__dict__)  # make self equal to other_obj
+```
+
 ```python
 Class Numbers:
     def __init__(self):
@@ -205,11 +226,6 @@ print(len(numbers_obj))
 ```
 
 __*yield*__ is like a return statement but it doesn't end the function. It merely suspends the function, and next time the function will resume. That's called generator function. When the Python yield statement is hit, the program suspends function execution and returns the yielded value to the caller. (In contrast, return stops function execution completely.) When a function is suspended, the state of that function is saved. This includes any variable bindings local to the generator, the instruction pointer, the internal stack, and any exception handling. This allows you to resume function execution whenever you call one of the generator’s methods. In this way, all function evaluation picks back up right after yield.
-
-A python object saves its attributes in the class dictionary. We can simply update the attributes using the class dictionary. This can be handy when we assign/make equal an object to another object in the same type.
-```python
-self.__dict__.update(other_obj.__dict__)  # make self equal to other_obj
-```
 
 ### Decorators
 Decorators wrap a function, modifying its behavior.
@@ -556,3 +572,10 @@ This example takes advantage of the falsiness of None and the fact that or not o
 When a function parameter can be one of several types, we can use Union (also called a sum type). For example, Union[int, str] means it could be an int; or it could be a str; but it cannot be a float, or a list, or another dict, or anything other than an int or str.
 
 When a function returns multiple values, we can use Tuple. For example, -> Tuple[bool, str] means function returns a bool and a string (as tuple, actually, you are always returning one object). 
+
+When a parameter is optional (a Python optional argument is an argument with a default value), you can use "Optional" as type annotation. For example, Optional[int]
+```python
+from typing import List, Tuple, Union, Optional
+def testf(x: int, y: Optional[bool], z: Union[int, str], w: dict) -> Tuple[bool, int]
+    pass
+```
