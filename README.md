@@ -19,6 +19,7 @@ It's a check if this file is being run directly by Python or it is being importe
 
 * type(object_name): get type of the object
 * isinstance(object_name, object_type): to test type of an object
+* issubclass(object_type, object_type): to test whether a class is a subclass of another class
 
 Function parameters: When you define a function, you use parameters. (formal parameters)
 Function arguments: When you call a function, you pass arguments (values). (actual parameters)
@@ -143,16 +144,17 @@ class BMW:
 
 Use class attributes to define properties that should have the same value for every class instance. Use instance attributes for properties that vary from one instance to another. Use attributes and methods to define the properties and behaviors of an object.
 
-* You can access the parent class from inside a method of a child class by using super(). super() searches the parent class for a method or an attribute. For example, you can use super() to call __ init __() method or any other method of inherited class. It's specifically useful when you make multiple inheritance. When you inherit from one class, using super() or calling the base class __ init __() function doesn't make a difference. 
+* You can access the parent class from inside a method of a child class by using super(). super() searches the parent class for a method or an attribute. For example, you can use super() to call __ init __() method or any other method of inherited class. It's specifically useful when you make multiple inheritance. When you inherit from one class, using super() or calling the base class __ init __() function doesn't make a difference. When we call the init() method of the parent class, we let that metheod to handle the common arguments e.g. model_name argument in the below example:
 ```python
 class BMW(Car):
-    def __init__(self, model_name):
-        super().__init__(model_name) # or Car.__init__(self, model_name)  
+    def __init__(self, model_name, extra_param):
+        super().__init__(model_name)  # or Car.__init__(self, model_name) 
+        self.extra_param = extra_param  # we handle the new parameter manually
 ```
 
 Regular (instance) methods need a class instance and can access the instance through self. They can read and modify an objects state freely. Class methods don’t need a class instance. They can’t access the instance (self) but they have access to the class itself via cls. Static methods don’t have access to cls or self. They work like regular functions but belong to the class’s namespace.
 
-* __*property*__ (attribute, instance variable, field): It's a value that is part of an object. It's kind of method, but you don't call it like function with (). With __*@property*__ decorator (Object getter (@method_name.getter) and setter (@method_name.setter) properties), we convert a class method to a property. So when we use this property, we implicitly call the related method (and show the return value).  
+* __*property*__ (attribute, instance variable, field): It's a value that is part of an object. It's kind of method, but you don't call it like function with (). @property decorator allows us to define a method, but we can access it like an attribute. With __*@property*__ decorator (Object getter (@method_name.getter) and setter (@method_name.setter) properties), we convert a class method to a property. So when we use this property, we implicitly call the related method (and show the return value).  
 
 * __*@classmethod*__: Class methods, marked with the @classmethod decorator, don’t need a class instance. They can’t access the instance (self) but they have access to the class itself via cls. Instead of accepting a self parameter (instance of the class), class methods take a cls parameter (class itself) that points to the class, and not the object/instance of the class, when the method is called. This is useful when we want to work with class attributes/variables. It's common to run class methods from class itself, not from instances. Since the class method only has access to this cls argument, it can’t modify object instance state. That would require access to self. However, class methods can still modify class state that applies across all instances of the class. 
 
@@ -294,11 +296,13 @@ for i, val in enumerate(myList, start=10):
 ```
 By using the start parameter, we access all of the elements, starting with the first index, but now our count starts from the specified integer value.
 
-- If you wanna walk through two lists at the same time, we can use the __*zip()*__ function. zip() function takes 2 or more lists and zips them together. We get the items which have the same index in their lists as pairs.  
+- If you wanna walk through two lists at the same time, we can use the __*zip()*__ function. zip() function takes 2 or more lists and zips them together. We get the items which have the same index in their lists as pairs. We want to use it when two lists are related to each other.  
 ```python
 for x, y in zip(x_list, y_list):
     print(x, y)
 ```
+zip() returns a zip object, not the entire list of zipped items. It's good for efficiency, because it can be a huge list, so we save memory. If you wanna get all those values in a list, you can cast them to a list with list(). 
+
 - To swap values, there is a trick which is particular to Python. It's actually tuple (particular Python data type) entpacking. Write just:
 ```python
 x, y = y, x
@@ -428,6 +432,8 @@ l2f = list(filter(lambda x: x>0, my_list))
  - List comprehensions return full lists, while generator expressions return generators. Unlike lists, lazy iterators do not store their contents in memory, so generators are a great way to optimize memory. However, if speed is an issue and memory isn’t, then a list comprehension is likely a better tool for the job than a generator. Generator expressions are often slower than list comprehensions because of the overhead of function calls (next()). 
 Generator expressions are perfect for when you know you want to retrieve data from a sequence, but you don’t need to access all of it at the same time. The design allows generators to be used on massive sequences of data, because only one element exists in memory at a time.
 
+Generators/iterator objects can be exhausted, and that means that we can loop through and access their values one time but we can't do it again. It all comes down to performance and efficiency. For example, when you cast a generator to a list with list(), you iterate over the generator and make it exhausted. Then you cannot loop through that generator again, because it's exhausted anymore. To be able to use it again, assign it the result of list casting to a variable and use that variable then. 
+
 - Dictionary comprehensions:
 ```python
 d = { key : value for key, value in zip(keyList, valueList) }
@@ -458,6 +464,15 @@ Functions and methods are always truthy. You might encounter this if a parenthes
     if always_false:  # Check Function object
         print("It enters here")  
 ```  
+
+- eval() function: You can pass a function and its arguments as string, then eval() will parse this string(expressin) and evaluate it as a Python expression. 
+```python
+def testf(arg1):
+    pass
+   
+function = "testf"
+x = eval(function + "(5)")  # everything has to be in string format
+```
 
 ### __init.py__
 When importing the package, Python searches through the directories on sys.path looking for the package subdirectory. 
@@ -555,11 +570,10 @@ x = [1, 9, 2, 3]
 y = x.copy  # Both variables will have the same value, but each will be stored at a different memory address. Only y = x would make y a reference to x.
 ```
 
-- Don't use mutable default values as function parameters, initialize them rather as None. Python’s default arguments are evaluated once when the function is defined, not each time the function is called.  This means that if you use a mutable default argument and mutate it (e. g. a list), you will and have mutated that object for all future calls to the function as well. Create a new list each time the function is called, by using a default arg to signal that no argument was provided (None is a good choice):
+- Don't use mutable default values as function parameters, initialize them rather as None. Python’s default arguments are evaluated once when the function is defined/created, not each time the function is called.  This means that if you use a mutable default argument and mutate it (e. g. a list), you will and have mutated that object for all future calls to the function as well. Create a new list each time the function is called, by using a default arg to signal that no argument was provided (None is a good choice):
 ```python
 def test(x = None):  # don't do x = [] here, otherwise you will have one list in the memory and each time you call the function, you'll always use this                          same memory address and manipulate the same object.
-if x is None:
-    x = []  # create a new empty list, so that the outputs of each function call will be independent from each other 
+x = x or []  # if x is None, then create a new empty list, so that the outputs of each function call will be independent from each other 
 ```
 Sometimes None can be useful in combination with short-circuit evaluation in order to have a default. In the case of "and" and "or", in addition to short-circuit evaluation, they also return the value at which they stopped evaluating. This can come handy when, for example, you want to give values defaults.:
 ```python
