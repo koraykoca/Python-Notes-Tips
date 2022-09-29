@@ -20,6 +20,7 @@ It's a check if this file is being run directly by Python or it is being importe
 * type(object_name): get type of the object
 * isinstance(object_name, object_type): to test type of an object
 * issubclass(object_type, object_type): to test whether a class is a subclass of another class
+* isnumeric(): method, to check whether all the characters of the string are numeric characters or not 
 
 Function parameters: When you define a function, you use parameters. (formal parameters)
 Function arguments: When you call a function, you pass arguments (values). (actual parameters)
@@ -363,6 +364,16 @@ for name in myList:
 else: # if no break occured
     print('Not Found!)
 ```
+You can use for-else to break nested loops:
+```python
+for i in some_list:
+    for j in another_list:
+        if j == some_thing:
+            break  # finish inner loop
+    else:
+        continue  # if break not happened, finish the current step of the loop
+    break  # finish outer loop
+```
 
 - We can loop directly through a file object. It's an iterator. 
 ```python
@@ -472,6 +483,25 @@ def testf(arg1):
    
 function = "testf"
 x = eval(function + "(5)")  # everything has to be in string format
+```
+
+- To get all matches of an item in a list:
+```python
+indices = [i for i, x in enumerate(my_list) if x == "whatever"]
+```
+- To print all duplicate items in a list:
+```python
+duplicates = [item for item, count in collections.Counter(a).items() if count > 1])
+```
+- To bring an element to the front in a list
+```python
+mylist.insert(0, mylist.pop(mylist.index(targetvalue)))
+```
+- Inverse of zip is again zip:
+```python
+first_list = [(1,2,3), (4,5,6)]
+zipped_list = list(zip(*first_list))   # [(1, 4), (2, 5), (3, 6)]
+first_list_back = list(zip(*zipped_list))  # [(1, 2, 3), (4, 5, 6)]
 ```
 
 ### __init.py__
