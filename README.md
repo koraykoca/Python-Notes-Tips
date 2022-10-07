@@ -522,7 +522,9 @@ We can make the PYTHONPATH value be set for any terminal session, by setting the
 export PYTHONPATH=$PYTHONPATH:<path>
     
 ### Dictionaries
-Usually, a Python dictionary throws a KeyError if you try to get an item with a key that is not currently in the dictionary. The defaultdict in contrast will simply create any items that you try to access (provided of course they do not exist yet). To create such a "default" item, it calls the function object that you pass to the constructor (more precisely, it's an arbitrary "callable" object, which includes function and type objects). 
+-Dictionaries are only ordered for Python version 3.7 and above but are unordered for 3.6 and below. Generally, it is not recommended to unpack unordered collections of elements as there is no guarantee of the order of the unpacked elements.
+
+-Usually, a Python dictionary throws a KeyError if you try to get an item with a key that is not currently in the dictionary. The defaultdict in contrast will simply create any items that you try to access (provided of course they do not exist yet). To create such a "default" item, it calls the function object that you pass to the constructor (more precisely, it's an arbitrary "callable" object, which includes function and type objects). 
 ```python
 from collections import defaultdict
 d_int = defaultdict(int)  # default items are created using int(), which will return the integer object 0    
@@ -623,3 +625,6 @@ from typing import List, Tuple, Union, Optional
 def testf(x: int, y: Optional[bool], z: Union[int, str], w: dict) -> Tuple[bool, int]
     pass
 ```
+
+### Python Errors
+_**TypeError**_: Occurs in Python when you perform an illegal operation for a specific data type.
