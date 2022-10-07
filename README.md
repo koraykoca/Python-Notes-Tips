@@ -637,5 +637,5 @@ pip freeze > requirements.txt
 # for a directory in the project (repo in a repo)
 pip install pipreqs
 python -m  pipreqs.pipreqs --encoding=utf8
-```bash
-
+```
+    
