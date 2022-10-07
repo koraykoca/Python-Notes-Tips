@@ -628,3 +628,14 @@ def testf(x: int, y: Optional[bool], z: Union[int, str], w: dict) -> Tuple[bool,
 
 ### Python Errors
 _**TypeError**_: Occurs in Python when you perform an illegal operation for a specific data type.
+
+### Pip
+To create requirements.txt:
+```bash
+# for the whole project
+pip freeze > requirements.txt
+# for a directory in the project (repo in a repo)
+pip install pipreqs
+python -m  pipreqs.pipreqs --encoding=utf8
+```bash
+
