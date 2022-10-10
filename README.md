@@ -21,6 +21,7 @@ It's a check if this file is being run directly by Python or it is being importe
 * isinstance(object_name, object_type): to test type of an object
 * issubclass(object_type, object_type): to test whether a class is a subclass of another class
 * isnumeric(): method, to check whether all the characters of the string are numeric characters or not 
+* vars(): returns the __dict__ attribute of an object
 
 Function parameters: When you define a function, you use parameters. (formal parameters)
 Function arguments: When you call a function, you pass arguments (values). (actual parameters)
@@ -229,6 +230,12 @@ print(len(numbers_obj))
 ```
 
 __*yield*__ is like a return statement but it doesn't end the function. It merely suspends the function, and next time the function will resume. That's called generator function. When the Python yield statement is hit, the program suspends function execution and returns the yielded value to the caller. (In contrast, return stops function execution completely.) When a function is suspended, the state of that function is saved. This includes any variable bindings local to the generator, the instruction pointer, the internal stack, and any exception handling. This allows you to resume function execution whenever you call one of the generator’s methods. In this way, all function evaluation picks back up right after yield.
+
+Dynamically Class Creation along with their attributes (using the dictionary data type) during the run-time of the program:
+If you pass a single argument to the type() function, it will return the type of the object. When you pass 3 arguments (name, bases, dict) to the type() function, it creates a class dynamically and returns a new type object.
+name = name of the class, which becomes ___name___ attribute
+bases = tuple from which current class is derived, becomes ___bases___ attribute
+dict = a dictionary which specifies the namespaces for the class, later becomes ___dict___ attribute
 
 ### Decorators
 Decorators wrap a function, modifying its behavior.
@@ -502,6 +509,18 @@ mylist.insert(0, mylist.pop(mylist.index(targetvalue)))
 first_list = [(1,2,3), (4,5,6)]
 zipped_list = list(zip(*first_list))   # [(1, 4), (2, 5), (3, 6)]
 first_list_back = list(zip(*zipped_list))  # [(1, 2, 3), (4, 5, 6)]
+```
+
+- In an Enum, if the exact value is unimportant, you may use auto instances and an appropriate value will be chosen for you (Care must be taken if you mix auto with other values):
+```python
+from enum import Enum, auto
+class Color(Enum):  # even though we use the class syntax to create Enums, Enums are not normal Python classes
+    RED = auto()
+    BLUE = auto()
+    GREEN = auto()
+    
+for color in Color:
+    print(color)
 ```
 
 ### __init.py__
