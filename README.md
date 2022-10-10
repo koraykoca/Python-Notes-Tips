@@ -231,14 +231,16 @@ print(len(numbers_obj))
 
 __*yield*__ is like a return statement but it doesn't end the function. It merely suspends the function, and next time the function will resume. That's called generator function. When the Python yield statement is hit, the program suspends function execution and returns the yielded value to the caller. (In contrast, return stops function execution completely.) When a function is suspended, the state of that function is saved. This includes any variable bindings local to the generator, the instruction pointer, the internal stack, and any exception handling. This allows you to resume function execution whenever you call one of the generator’s methods. In this way, all function evaluation picks back up right after yield.
 
-Dynamically Class Creation along with their attributes (using the dictionary data type) during the run-time of the program:
+_**Dynamically Class Creation along with their attributes (using the dictionary data type) during the run-time of the program:**_
+
 If you pass a single argument to the type() function, it will return the type of the object. When you pass 3 arguments (name, bases, dict) to the type() function, it creates a class dynamically and returns a new type object.
+
 name = name of the class, which becomes ___name___ attribute
 bases = tuple from which current class is derived, becomes ___bases___ attribute
 dict = a dictionary which specifies the namespaces for the class, later becomes ___dict___ attribute
 
 ### Decorators
-Decorators wrap a function, modifying its behavior.
+Decorators wrap a function, modifying its behavior. Decorators allow us to wrap another function in order to extend the behavior of the wrapped function without affecting it permanently.
 ```python
 def my_decorator(func):  # function that takes a function reference as argument
     def wrapper():
@@ -267,6 +269,22 @@ def say_hi():
     print("Hi!")
 ```
 So, @my_decorator is just an easier way of saying say_hi = my_decorator(say_hi). It’s how you apply a decorator to a function.
+
+- property() function: Property python function is mostly used in Python classes to define its properties by accepting the getter, setter, and deleter methods as arguments and returning an object of the property class. Python property() built-in function (property(fget, fset, fdel, doc)) and @property decorator is provided to easily implement the getters and setters methods in Object-Oriented Programming. 
+
+
+- partial() function: It returns a new partial callable object. functools.partial(func,*args,**kwargs), when it is called, it will behave like func called with positional arguments(*args) and keywords arguments (*kwargs). Calls to the partial object will be forwarded to func with new arguments and keywords.
+```python
+from functools import partial
+def add_int(x, y):
+    return x + y
+    
+partial_add_int = partial(add_int, 23)  # 23 replaces first parameter
+
+>>> partial_add_int(7)  # returns 30
+```
+
+
 
 ### File Path Handling
 With paths represented by strings, it is possible, but usually a bad idea, to use regular string methods. For instance, instead of joining two paths with + like regular strings, you should use os.path.join(), which joins paths using the correct path separator on the operating system. Subsequent folders are separated by a forward slash / (Unix - Mac and Linux) or backslash \ (Windows). 
