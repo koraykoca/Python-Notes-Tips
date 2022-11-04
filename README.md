@@ -153,6 +153,8 @@ class BMW(Car):
         super().__init__(model_name)  # or Car.__init__(self, model_name) 
         self.extra_param = extra_param  # we handle the new parameter manually
 ```
+super() allows us to call methods of the superclass in our subclass. The primary use case of this is to extend the functionality of the inherited method. If you skip defining __ init __ () method of subclass, the __ init __ () of the superclass will be called automatically. If you define __ init __ () method of subclass, you need to explicitly call the __ init __ () of the superclass using super(). With super(), we can change the internal logic of a function from superclass in a single location subclass.
+
 
 Regular (instance) methods need a class instance and can access the instance through self. They can read and modify an objects state freely. Class methods don’t need a class instance. They can’t access the instance (self) but they have access to the class itself via cls. Static methods don’t have access to cls or self. They work like regular functions but belong to the class’s namespace.
 
