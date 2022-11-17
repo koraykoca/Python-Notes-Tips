@@ -310,6 +310,7 @@ First element is the directory containing the script that we are running, so you
 The default Python implementation, CPython, is actually written in the C programming language. You need something to interpret written code based on the rules in the manual, and CPython interprets Python bytecode (output is .pyc file or a __pycache__ folder). You also need something to actually execute interpreted code on a computer. CPython (or other alternatives like IronPython or PyPy) fulfills both of those requirements. It converts your Python code into instructions that it then runs on a virtual machine. The memory management algorithms and structures exist in the CPython code, in C.
 
 ### Big O Complexity (Average required time complexity)
+[Time-complexity (aka "Big O" or "Big Oh") of various operations in current CPython](https://wiki.python.org/moin/TimeComplexity)
 * O(1) means constant time. For example, appending an element to a list, getting an element with an index, search an element in a set
 * O(n) means that the average time complexity will grow along with the size e.g. of a list (traversing the whole list,  all elements must be once considered). For example, inserting an element at the beginning of the list, searching for a specific element (index()), summing all elements(sum()), just for loop itself (for i in range(n)).
 O(n^2) means that as the number of elements grows, the number of lookups grows quadratically (time complexity grows on the order of O(N²)). For example,  two nested for loops, if-elif-else (O(1)-O(n)-O(n^2)) block.
