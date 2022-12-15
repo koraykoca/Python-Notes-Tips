@@ -315,7 +315,11 @@ The default Python implementation, CPython, is actually written in the C program
 * O(n) means that the average time complexity will grow along with the size e.g. of a list (traversing the whole list,  all elements must be once considered). For example, inserting an element at the beginning of the list, searching for a specific element (index()), summing all elements(sum()), just for loop itself (for i in range(n)).
 O(n^2) means that as the number of elements grows, the number of lookups grows quadratically (time complexity grows on the order of O(N²)). For example,  two nested for loops, if-elif-else (O(1)-O(n)-O(n^2)) block.
 
-- collections.deque (pronounced “deck”) uses an implementation of a linked list in which you can access, insert, or remove elements from the beginning or end of a list with constant O(1) performance.
+- collections.deque (pronounced “deck”) uses an implementation of a linked list in which you can access, insert, or remove elements from the beginning or end of a list with constant O(1) performance:
+```python
+from collections import deque
+experience = deque(maxlen=2000)  # elements are added at the end of the list and popped out from the beginning of the list when maxlen reaches
+```
 
 ### Pythonic Tricks
 - __*enumerate()*__ function returns a list of indices and values in a list. Use this function if you wanna walk through a list and at the same time keep track of the positions in a list. You can start your count at an offset using the optional "start" parameter:  
