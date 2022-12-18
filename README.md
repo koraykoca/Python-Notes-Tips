@@ -112,8 +112,9 @@ load(), loads() -> to get Python object (dictionary) from JSON object
 
 dump(), dumps() -> convert from Python object to JSON object
 
-- [Bitwise Operators](https://github.com/python/cpython/blob/532aa4e4e019812d0388920768ede7c04232ebe1/Objects/longobject.c#L5179)
-The idea is to check whether the last bit of the number is set or not. If last bit is set then the number is odd, otherwise even. 
+- [Bitwise Operators](https://github.com/python/cpython/blob/532aa4e4e019812d0388920768ede7c04232ebe1/Objects/longobject.c#L5179):
+
+WIth bitwise operator, you can check if a number is odd or even. The idea is to check whether the last bit of the number is set or not. If last bit is set then the number is odd, otherwise even. 
 ```python
     if (x & 1) != 0):   #  it compares the digits according to size of the right argument (in this case it's just 1, so it just compares the last digit of x)
         # x is odd
