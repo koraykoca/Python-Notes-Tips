@@ -694,6 +694,7 @@ python -m  pipreqs.pipreqs --encoding=utf8
 ```
     
 ### Useful codes
+```python
 - def get_iter(obj) -> Iterator:
     """Returns the Iterator of the object, or returns an Iterator with only the object itself if the object is not iterable
 
@@ -704,3 +705,4 @@ python -m  pipreqs.pipreqs --encoding=utf8
         yield from iter(obj)
     except TypeError:
         yield obj
+```
