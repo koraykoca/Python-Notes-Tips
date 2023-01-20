@@ -14,6 +14,8 @@ It's a check if this file is being run directly by Python or it is being importe
 * Class names: CapWords
 * Class member names, which are used only in the class (for internal use, not for external use) (private, protected members): _private_member
 
+- When you have an attribute that represents internal data that shouldn't be accessed directly (by code outside of your class) it's common in Python to prefix a single underscore (_) before that attribute name. Use one leading underscore only for non-public methods and instance variables (read-only public properties). This single underscore prefix is just a convention.
+
 ### Built-in Functions, Data Structures
 * [Python’s Standard Library:](https://docs.python.org/3/library/functions.html) By default, Python comes with a lot of functionality that’s just an import statement away. 
 
@@ -691,3 +693,14 @@ pip install pipreqs
 python -m  pipreqs.pipreqs --encoding=utf8
 ```
     
+### Useful codes
+- def get_iter(obj) -> Iterator:
+    """Returns the Iterator of the object, or returns an Iterator with only the object itself if the object is not iterable
+
+    This function is useful if a function shall be able to accept an Iterable as well as a Non-iterable object, where the latter shall be treated as a tuple
+    with only one element.
+    """
+    try:
+        yield from iter(obj)
+    except TypeError:
+        yield obj
