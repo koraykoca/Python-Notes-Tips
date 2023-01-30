@@ -692,6 +692,14 @@ pip freeze > requirements.txt
 pip install pipreqs
 python -m  pipreqs.pipreqs --encoding=utf8
 ```
+
+### Python Packages
+- [snakeviz](https://jiffyclub.github.io/snakeviz/): graphical viewer for the output of Python’s cProfile module
+```bash
+pip install snakeviz
+python -m cProfile -o program.prof main.py
+snakeviz .\program.prof
+```
     
 ### Useful codes
 ```python
