@@ -16,6 +16,30 @@ It's a check if this file is being run directly by Python or it is being importe
 
 - When you have an attribute that represents internal data that shouldn't be accessed directly (by code outside of your class) it's common in Python to prefix a single underscore (_) before that attribute name. Use one leading underscore only for non-public methods and instance variables (read-only public properties). This single underscore prefix is just a convention.
 
+### Python imports
+Python packages contain an __init__.py file, which is necessary to make Python recognize the directory as a package. Subpackages within a package also contains an __init__.py file. Python submodules could be considered a submodule within the subpackage subpackage
+
+Example tree: 
+├── package
+│   ├── __init__.py
+│   └── subpackage
+│       ├── __init__.py
+│       ├── module1.py
+│       └── submodule
+│           └── module2.py
+└── script.py
+
+in module2.py, both imports below work: 
+* Absolute import: For an absolute import to work, you would need to specify the full path from the top-level package
+```python
+from package.subpackage.module1 import ...
+```
+* Relative import: The dot (.) indicates a relative import within a Python module or package. the two dots (..) mean go up one level in the package hierarchy, then import
+```python
+from ..module1 import ...
+```
+Ensure that you are running the script from the correct working directory. The working directory should be the directory containing the package directory (python package/subpackage/submodule/module2.py)
+
 ### Built-in Functions, Data Structures
 * [Python’s Standard Library:](https://docs.python.org/3/library/functions.html) By default, Python comes with a lot of functionality that’s just an import statement away. 
 
