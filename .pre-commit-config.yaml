@@ -30,6 +30,7 @@ repos:
   rev: 23.11.0
   hooks:
   - id: black
+    args: [--line-length=120]
   
 # check code against a set of style and linting rules
 - repo: https://github.com/PyCQA/flake8
