@@ -1,12 +1,12 @@
 # Python-Notes-Tips
 
-* Everything in Python is an object (even types such as int and str.), and each object is stored at a specific memory location. This is true on an implementation level in CPython. Every value assigned to a variable in Python exists as an object on the heap. It takes time to allocate these objects because our memory manager needs to do work. When an integer is assigned to a variable in Python, a corresponding PyObject needs to exist on the heap.  There is a struct (a custom data type that groups together different data types in C, it’s like a class with attributes and no methods) called a PyObject, which every other object in CPython uses. You can use id() to check the identity of an object.
+* Everything in Python is an object (even types such as int and str), and each object is stored at a specific memory location. This is true on an implementation level in CPython. Every value assigned to a variable in Python exists as an object on the heap. It takes time to allocate these objects because our memory manager needs to do work. When an integer is assigned to a variable in Python, a corresponding PyObject needs to exist on the heap.  There is a struct (a custom data type that groups together different data types in C, it’s like a class with attributes and no methods) called a PyObject, which every other object in CPython uses. You can use id() to check the identity of an object.
 
 * REPL stands for Read, Evaluate, Print, Loop. The REPL is how you interact with the Python Interpreter. Unlike running a file containing Python code, in the REPL you can type commands and instantly see the output printed out. To start the REPL in VS code, open the command palette and search for and select “Start REPL”. If you’d like to start the REPL from the command line outside of the editor, type python in your shell. 
-">>>" is the prompt. In example code, lines starting with >>> means they are input.
+">>>" symbol serves as the prompt where you enter your code. In the code examples below, lines prefixed with ">>>" indicate input.
 
-* if __name__ == '__main__':
-It's a check if this file is being run directly by Python or it is being imported. If we run the script directly, run the code under this conditional. If we import this module, doesn't run it "implicitly" (otherwise every module we imported would be run by Python automatically because we imported it). Whenever Python runs a file, it first sets a few special variables before even runs any code, and __ name __ is one of those special variables. When Python runs a pyhton file directly, it sets __ name __ == __ main __. When we import a module, Python sets __ name __ to the name of the file. 
+* if __ name __ == '__ main __':
+It's a check if this file is being run directly by Python or it is just being imported. If we run the script directly, run the code under this conditional. If we import this module, doesn't run it "implicitly" (otherwise every module we imported would be run by Python automatically because we imported it). Whenever Python runs a file, it first sets a few special variables before even runs any code, and __ name __ is one of those special variables. When Python runs a pyhton file directly, it sets __ name __ == __ main __. When we import a module, Python sets __ name __ to the name of the file. 
 
 
 ### Python Style Convention
@@ -14,12 +14,13 @@ It's a check if this file is being run directly by Python or it is being importe
 * Class names: CapWords
 * Class member names, which are used only in the class (for internal use, not for external use) (private, protected members): _private_member
 
-- When you have an attribute that represents internal data that shouldn't be accessed directly (by code outside of your class) it's common in Python to prefix a single underscore (_) before that attribute name. Use one leading underscore only for non-public methods and instance variables (read-only public properties). This single underscore prefix is just a convention.
+- When you have an attribute that represents internal data that shouldn't be accessed directly (by code outside of your class), it's common in Python to prefix a single underscore (_) before that attribute name. Use one leading underscore only for non-public methods and instance variables (read-only public properties). This single underscore prefix is just a convention.
 
 ### Python imports
-Python packages contain an __init__.py file, which is necessary to make Python recognize the directory as a package. Subpackages within a package also contains an __init__.py file. Python submodules could be considered a submodule within the subpackage subpackage
+Python packages contain an __ init __.py file, which is necessary to make Python recognize the directory as a package. Subpackages within a package also contains an __ init __.py file. Python submodules could be considered a submodule within the subpackage. Let's look at an example:
 
-Example tree: 
+Example tree
+```
 ├── package
 │   ├── __init__.py
 │   └── subpackage
@@ -28,48 +29,61 @@ Example tree:
 │       └── submodule
 │           └── module2.py
 └── script.py
+```
 
 in module2.py, both imports below work: 
-* Absolute import: For an absolute import to work, you would need to specify the full path from the top-level package
-```python
-from package.subpackage.module1 import ...
-```
-* Relative import: The dot (.) indicates a relative import within a Python module or package. the two dots (..) mean go up one level in the package hierarchy, then import
-```python
-from ..module1 import ...
-```
+* _**Absolute import**_: For an absolute import to work, you would need to specify the full path from the top-level package
+    ```python
+    from package.subpackage.module1 import ...
+    ```
+* _**Relative import**_: The dot (.) indicates a relative import within a Python module or package. the two dots (..) mean go up one level in the package hierarchy, then import
+    ```python
+    from ..module1 import ...
+    ```
 Ensure that you are running the script from the correct working directory. The working directory should be the directory containing the package directory (python package/subpackage/submodule/module2.py)
 
 ### Built-in Functions, Data Structures
-* [Python’s Standard Library:](https://docs.python.org/3/library/functions.html) By default, Python comes with a lot of functionality that’s just an import statement away. 
+* [Python’s Standard Library:](https://docs.python.org/3/library/functions.html) By default, Python comes with a lot of functionality that’s just an import statement away. Some examples:
+    * type(object_name): get type of the object
+    * isinstance(object_name, object_type): to test type of an object
+    * issubclass(object_type, object_type): to test whether a class is a subclass of another class
+    * isnumeric(): method, to check whether all the characters of the string are numeric characters or not 
+    * vars(): returns the __dict__ attribute of an object
+    * sorted(): By default, sorted() sorts the input in ascending order, and the reverse keyword argument causes it to sort in descending order. It’s worth knowing about the optional keyword argument key that lets you specify a function (usually lambda) that will be called on every element prior to sorting. Adding a function allows custom sorting rules, which       are especially helpful if you want to sort more complex data types e.g. dictionaries. Example:
+        ```python
+        cars = [{"Car": "Pagani", "power": 850},
+                {"Car": "Porsche", "power": 450},
+                {"Car": "BMW", "power": 400},
+                {"Car": "Ferrari", "power": 650}]
+        print(sorted(cars, key=lambda dl: dl["power"], reverse=True))
+        
+        cars_d = {"Pagani": 850, "BMW": 400, "Ferrari": 650, "Porsche": 450}
+        print(sorted(cars_d.items(), key=lambda x:x[-1]))
+        ```
 
-* type(object_name): get type of the object
-* isinstance(object_name, object_type): to test type of an object
-* issubclass(object_type, object_type): to test whether a class is a subclass of another class
-* isnumeric(): method, to check whether all the characters of the string are numeric characters or not 
-* vars(): returns the __dict__ attribute of an object
-
-Function parameters: When you define a function, you use parameters. (formal parameters)
-Function arguments: When you call a function, you pass arguments (values). (actual parameters)
+* _**Function parameters and function arguments**_: 
+    * **Function parameters**: When you define a function, you use parameters. (formal parameters)
+    * **Function arguments**: When you call a function, you pass arguments (values). (actual parameters)
 
 You should always avoid using a mutable data type such as a list or a dictionary as a default value when defining a function with optional parameters.
 
 When none of the parameters in a function definition has default values, you can order the parameters in any way you wish. The same applies when all the parameters have default values. However, when you have some parameters with default values and others without, the order in which you define the parameters is important. The parameters with no default value must always come before those that have a default value.
 
-args and kwargs: It is possible to define a function that accepts any number of optional arguments. You can even define functions that accept any number of keyword arguments. Keyword arguments are arguments that have a keyword and a value associated with them.
+* _**args and kwargs**_:
+  
+It is possible to define a function that accepts any number of optional arguments. You can even define functions that accept any number of keyword arguments. Keyword arguments are arguments that have a keyword and a value associated with them. Example:
 
-When the asterisk or star symbol ( * ) is used immediately before a sequence, it unpacks the sequence into its individual components. When a sequence such as a list is unpacked, its items are extracted and treated as individual objects. There is nothing special about the name args. It is the preceding * that gives this parameter its particular properties.  Often, it’s better to use a parameter name that suits your needs best to make the code more readable.
+When the asterisk or star symbol ( * ) is used immediately before a sequence, it unpacks the sequence into its individual components. When a sequence such as a list is unpacked, its items are extracted and treated as individual objects. There is nothing special about the name args. It is the preceding * that gives this parameter its particular properties.  Often, it’s better to use a parameter name that suits your needs best to make the code more readable. Example:
 ```python
-part_list = {}
-def add_parts(part_list, *items_name):
+def add_items(part_list, *items_name):
     for item_name in items_name:
         part_list[item_name] = 1
     return part_list
     
-part_list = add_parts(part_list, "screw", "nut", "washer", "oil")
+part_list = {}
+part_list = add_items(part_list, "screw", "nut", "washer", "oil")
 ```
-
-When you display the data type, you can see that item_names is a tuple. Therefore, all the additional arguments are assigned as items in the tuple item_names. You can then use this tuple within the function definition as you did in the main definition of add_items() above, in which you’re iterating through the tuple item_names using a for loop.
+When you display the data type, you can see that _item_names_ above is a tuple. Therefore, all the additional arguments are assigned as items in the tuple item_names. You can then use this tuple within the function definition as we did in the main definition of add_items() above, in which you’re iterating through the tuple item_names using a for loop.
 
 When you define a function with parameters, you have a choice of calling the function using either non-keyword arguments or keyword arguments:
 ```python
@@ -82,19 +96,19 @@ test_arguments(a="BMW", b="Porsche")  #  the arguments are passed by keyword (or
 The double star ( ** ) is used to unpack items from a mapping. A mapping is a data type that has paired values as items, such as a dictionary. The double star or asterisk operates similarly to the single asterisk you used earlier to unpack items from a sequence. The parameter name kwargs is often used in function definitions, but the parameter can have any other name as long as it’s preceded by the ** operator.
 
 ```python
-part_list = {}
-def add_parts(part_list, **items_to_add):
+def add_items(part_list, **items_to_add):
     for item_name, quantity in items_to_add.items():
         part_list[item_name] = quantity
     return part_list
     
-part_list = add_parts(part_list, screw=1, nut=2, washer=2, oil=1)
+part_list = {}
+part_list = add_items(part_list, screw=1, nut=2, washer=2, oil=1)
 ```
 
-Earlier, you learned that args is a tuple, and the optional non-keyword arguments used in the function call are stored as items in the tuple. The optional keyword arguments are stored in a dictionary, and the keyword arguments are stored as key-value pairs in this dictionary.
+Earlier, we learned that args is a tuple, and the optional non-keyword arguments used in the function call are stored as items in the tuple. The optional keyword arguments are stored in a dictionary, and the keyword arguments are stored as key-value pairs in this dictionary.
 
-Generally, lists are for looping; tuples for structs. Lists are homogeneous; tuples heterogeneous. Lists for variable length. 
-A tuple is an iterable and seems like simply a immutable list, it's really the Python equivalent of a C struct:
+Generally, lists are for looping; tuples are for structs. Lists are homogeneous; tuples are heterogeneous, meaning that lists are typically used to store collections of items that are all of the same type (e.g. a list of integers) and tuples are often used to hold a fixed collection of items that can be of different types.
+A tuple is an iterable and seems like simply an immutable list, it's really the Python equivalent of a C struct:
 ```c
 struct{
     int a;
@@ -108,29 +122,21 @@ struct foo x = { 9, 'k', 5.3 };
 x = (9, 'k', 5.3)
 ```
 
-- By default, sorted() has sorted the input in ascending order, and the reverse keyword argument causes it to sort in descending order. It’s worth knowing about the optional keyword argument key that lets you specify a function (usually lambda) that will be called on every element prior to sorting. Adding a function allows custom sorting rules, which are especially helpful if you want to sort more complex data types e.g. dictionaries:
-```python
-cars = [{"Car": "Pagani", "power": 850},
-        {"Car": "Porsche", "power": 450},
-        {"Car": "BMW", "power": 250},
-        {"Car": "Ferrari", "power": 650},]
-print(sorted(cars, key=lambda dl: dl["power"], reverse=True))
+* _**requests library**_:
 
-cars_d = {"Pagani": 850, "BMW": 250, "Ferrari": 650, "Porsche": 450}
-print(sorted(cars_d.items(), key=lambda x:x[-1]))
-```
-
-- requests library: It allows us to make http requests to get information from websites. For example, requests.get is used to go to a website and pull down the required informations from the website. If it returns ok, then we can get the information with text() method:
+It allows us to make http requests to get information from websites. For example, _requests.get_ is used to go to a website and pull down the required informations from the website. If it returns ok, then we can get the information with text() method. Example:
 ```python
 import requests
 def get_info():
     response = requests.get(f"<url>")   
-    if response.ok:  # response.status_code < 400 responses
+    if response.ok:           # response.status_code < 400 responses
         return response.text  # content of the response, in unicode
     else:
         return "Bad Response"
 ```
 To test the library, there is [this website](http://httpbin.org/) from the developer of the library. 
+
+* _**json library**_:
 
 Python has JSON (JavaScript Object Notation) standard library. JSON is very common data format for storing some Information. JSON is used a lot when fetching data from online APIs. It can also be used for configuration files. [It's very similar to Python dictionary.](https://docs.python.org/3/library/json.html#encoders-and-decoders) 
 
@@ -138,9 +144,9 @@ load(), loads() -> to get Python object (dictionary) from JSON object
 
 dump(), dumps() -> convert from Python object to JSON object
 
-- [Bitwise Operators](https://github.com/python/cpython/blob/532aa4e4e019812d0388920768ede7c04232ebe1/Objects/longobject.c#L5179):
+- _**[Bitwise Operators](https://github.com/python/cpython/blob/532aa4e4e019812d0388920768ede7c04232ebe1/Objects/longobject.c#L5179)**_:
 
-WIth bitwise operator, you can check if a number is odd or even. The idea is to check whether the last bit of the number is set or not. If last bit is set then the number is odd, otherwise even. 
+With bitwise operator, you can check if a number is odd or even. The idea is to check whether the last bit of the number is set or not. If last bit is set then the number is odd, otherwise even. 
 ```python
     if (x & 1) != 0):   #  it compares the digits according to size of the right argument (in this case it's just 1, so it just compares the last digit of x)
         # x is odd
@@ -153,7 +159,7 @@ Custom objects are mutable by default. An object is mutable if it can be altered
 
 ### Classes 
 
-Aristotle once said, "Knowing self is the beginning of all wisdom."
+Aristotle once said: _Knowing self is the beginning of all wisdom._
 ```python
 class BMW:
     def get_power(self):
@@ -161,122 +167,120 @@ class BMW:
         
 car = BMW()
 #  following two lines do the exact same thing
-car.get_power() # instance (car = self) is getting passed automatically as the first argument in regular class methods
+car.get_power()     # instance (car = self) is getting passed automatically as the first argument in regular class methods
 BMW.get_power(car)  # we need to pass the instance to the function manually
 ```
+Whenever you call a Python class to create a new instance, you trigger Python’s instantiation process. This process runs through two separate steps:
 
-* def __ init __ (self): (Constructor) first function that is called when an instance of the class is created. The functions which starts with double underscores are called magic functions (because they have special meaning to Python) or dunder functions (because of double underscores). The properties that all class objects must have are defined in this method. Every time a new object of the class is created, __ init __() sets the initial state of the object by assigning the values of the object’s properties. That is, __ init __() initializes each new instance of the class.
+1) Create a new instance of the target class (__ new __())
 
-* Instance attributes: Attributes created in __ init __() are called instance attributes. An instance attribute’s value is specific to a particular instance of the class. 
-* Class attributes: Attributes that have the same value for all class instances. We can define a class attribute by assigning a value to a variable name outside of __ init __() (usually before of it). Class attributes are defined directly beneath the first line of the class name and are indented by four spaces. They must always be assigned an initial value. When an instance of the class is created, class attributes are automatically created and assigned to their initial values. When we want to access a class attribute in a method, we need to either access it through the class itself (class namespace) or an instance of the class (self). Accessing with self is generally preferrable because that will give us the ability to change the value of the class attribute for a single instance (overwriting). However, if you want a variable have the same value for all instances of the class, then you should access it through class itself, instead of self. 
-```python
-class BMW:
-    car_brand = "BMW"  # class attribute
-    def __init__(self, color):
-        self.color = color  # instance attribute     
-    def show_brand(self):
-        print(f"Brand is: {self.car_brand}")  # accessing with self
-```
+2) Initialize the new instance with an appropriate initial state (__ init __())
 
-Use class attributes to define properties that should have the same value for every class instance. Use instance attributes for properties that vary from one instance to another. Use attributes and methods to define the properties and behaviors of an object.
+__ new __() is responsible for creating and returning a new empty object. Then, __ init __() takes the resulting object, along with the class constructor’s arguments. The __ init __() method takes the new object as its first argument, self. 
 
-* You can access the parent class from inside a method of a child class by using super(). super() searches the parent class for a method or an attribute. For example, you can use super() to call __ init __() method or any other method of inherited class. It's specifically useful when you make multiple inheritance. When you inherit from one class, using super() or calling the base class __ init __() function doesn't make a difference. When we call the init() method of the parent class, we let that metheod to handle the common arguments e.g. model_name argument in the below example:
-```python
-class BMW(Car):
-    def __init__(self, model_name, extra_param):
-        super().__init__(model_name)  # or Car.__init__(self, model_name) 
-        self.extra_param = extra_param  # we handle the new parameter manually
-```
-super() allows us to call methods of the superclass in our subclass. The primary use case of this is to extend the functionality of the inherited method. If you skip defining __ init __ () method of subclass, the __ init __ () of the superclass will be called automatically. If you define __ init __ () method of subclass, you need to explicitly call the __ init __ () of the superclass using super(). With super(), we can change the internal logic of a function from superclass in a single location subclass.
+* _**def __ init __ (self)**_: (Constructor) The first function that is called when an instance of the class is created. The functions which starts with double underscores are called magic functions (because they have special meaning to Python) or dunder functions (because of double underscores). The properties that all class objects must have are defined in this method. Every time a new object of the class is created, __ init __() sets the initial state of the object by assigning the values of the object’s properties. That is, __ init __() initializes each new instance of the class.
 
+* _**Instance and class attributes**_:
+    * **Instance attributes**: Attributes created in __ init __() are called instance attributes. An instance attribute’s value is specific to a particular instance of the class. 
+    * **Class attributes**: Attributes that have the same value for all class instances. We can define a class attribute by assigning a value to a variable name outside of __ init __() (usually before of it). Class attributes are defined directly beneath the first line of the class name and are indented by four spaces. They must always be assigned an initial value. When an instance of the class is created, class attributes are automatically created and assigned to their initial values. When we want to access a class attribute in a method, we need to either access it through the class itself (class namespace) or an instance of the class (self). Accessing with self is generally preferrable because that will give us the ability to change the value of the class attribute for a single instance (overwriting). However, if you want a variable have the same value for all instances of the class, then you should access it through class itself, instead of self. Example:
+        ```python
+        class BMW:
+            car_brand = "BMW"  # class attribute
+            def __init__(self, color):
+                self.color = color  # instance attribute     
+            def show_brand(self):
+                print(f"Brand is: {self.car_brand}")  # accessing with self
+        ```
+      Use class attributes to define properties that should have the same value for every class instance. Use instance attributes for properties that vary from one instance to another. Use attributes and methods to define the properties and behaviors of an object.
 
-Regular (instance) methods need a class instance and can access the instance through self. They can read and modify an objects state freely. Class methods don’t need a class instance. They can’t access the instance (self) but they have access to the class itself via cls. Static methods don’t have access to cls or self. They work like regular functions but belong to the class’s namespace.
+* _**super()**_: You can access the parent class from inside a method of a child class by using super(). super() searches the parent class for a method or an attribute. For example, you can use super() to call __ init __() method or any other method of inherited class. It's specifically useful when you make multiple inheritance. When you inherit from one class, using super() or calling the base class __ init __() function doesn't make a difference. When we call the init() method of the parent class, we let that metheod to handle the common arguments e.g. model_name argument in the below example:
+    ```python
+    class BMW(Car):
+        def __init__(self, model_name, extra_param):
+            super().__init__(model_name)    # or Car.__init__(self, model_name) 
+            self.extra_param = extra_param  # we handle the new parameter manually
+    ```
+  super() allows us to call methods of the superclass in our subclass. The primary use case of this is to extend the functionality of the inherited method. If you skip defining __ init __ () method of subclass, the __ init __ () of the superclass will be called automatically. If you define __ init __ () method of subclass, you need to explicitly call the __     
+  init __ () of the superclass using super(). With super(), we can change the internal logic of a function from superclass in a single location subclass.
+
+* _**Method types**_:
+    * Regular (instance) methods need a class instance and can access the instance through self. They can read and modify an objects state freely.
+    * Class methods don’t need a class instance. They can’t access the instance (self) but they have access to the class itself via cls.
+    * Static methods don’t have access to cls or self. They work like regular functions but belong to the class’s namespace.
 
 * __*property*__ (attribute, instance variable, field): It's a value that is part of an object. It's kind of method, but you don't call it like function with (). @property decorator allows us to define a method, but we can access it like an attribute. With __*@property*__ decorator (Object getter (@method_name.getter) and setter (@method_name.setter) properties), we convert a class method to a property. So when we use this property, we implicitly call the related method (and show the return value).  
 
-* __*@classmethod*__: Class methods, marked with the @classmethod decorator, don’t need a class instance. They can’t access the instance (self) but they have access to the class itself via cls. Instead of accepting a self parameter (instance of the class), class methods take a cls parameter (class itself) that points to the class, and not the object/instance of the class, when the method is called. This is useful when we want to work with class attributes/variables. It's common to run class methods from class itself, not from instances. Since the class method only has access to this cls argument, it can’t modify object instance state. That would require access to self. However, class methods can still modify class state that applies across all instances of the class. 
+* __*@classmethod*__: Class methods, marked with the @classmethod decorator, don’t need a class instance. They can’t access the instance (self) but they have access to the class itself via cls. Instead of accepting a self parameter (instance of the class), class methods take a cls parameter (class itself) that points to the class, and not the object/instance of the class, when the method is called. This is useful when we want to work with class attributes/variables. It's common to run class methods from class itself, not from instances. Since the class method only has access to this cls argument, it can’t modify object instance state. That would require access to self. However, class methods can still modify class state that applies across all instances of the class.    
 
-We can use class methods as factory functions (to create new objects from the class using cls argument as constructor). Use of class methods can also allow you __*to define alternative constructors for your classes*__. Python only allows one __ init __ method per class. Using class methods it’s possible to add as many alternative constructors as necessary. A popular convention within the Python community is to use the from preposition to name constructors that you create as class methods.
-```python
-class Circle:
-    def __init__(self, radius):
-        self.radius = radius
-        
-    @classmethod
-    def from_diameter(cls, diameter):  # its first argument receives a reference to the containing class, Circle.
-        return cls(radius=diameter/2)  # instantiate Circle by calling cls (cls = Circle, actually) with the radius 
-                                         that results from the diameter argument.
-                                         
-circle = Circle.from_diameter(84)   # construct an instance using the diameter instead of the radius
-```
+  We can use class methods as factory functions (to create new objects from the class using cls argument as constructor). Use of class methods can also allow you __*to define alternative constructors for your classes*__. Python only allows one __ init __ method per class. Using class methods it’s possible to add as many alternative constructors as necessary. A 
+  popular convention within the Python community is to use the from preposition to name constructors that you create as class methods. Example:
+    ```python
+    class Circle:
+        def __init__(self, radius):
+            self.radius = radius
+            
+        @classmethod
+        def from_diameter(cls, diameter):  # its first argument receives a reference to the containing class, Circle.
+            return cls(radius=diameter/2)  # instantiate Circle by calling cls (cls = Circle, actually) with the radius 
+                                           # that results from the diameter argument.
+                                             
+    circle = Circle.from_diameter(84)      # construct an instance using the diameter instead of the radius
+    ```
 
-With this technique, you have the option to select the right name for each alternative constructor that you provide, which can make your code more readable and maintainable.
+  With this technique, you have the option to select the right name for each alternative constructor that you provide, which can make your code more readable and maintainable.
 
 * __*@staticmethod*__: Static methods, marked with the @staticmethod decorator, don’t have access to cls or self. They work like regular functions but belong to the class’s namespace, because they have some logical connection with the class. We use them when we need some functionality not w.r.t. an object but w.r.t. the complete class. This means, a static method can be called without creating an object for that class. Static methods don't take self as an argument while all other class methods take self as an argument. That's why, static method is simply basically a normal function but it is attached to a class definition. They are specifically good to implement factory functions, which generate objects from the class. This type of method takes neither a self nor a cls parameter (but of course it’s free to accept an arbitrary number of other parameters). Therefore a static method can neither modify object state nor class state. Static methods are restricted in what data they can access - and they’re primarily a way to namespace your methods. Particular method is independent from everything else around it. If you don't access the instance or the class anywhere within the method, then it would be appropriate to make it static method.   
 
 * __*@abstractmethod*__: A method whose declaration is known but body cannot be provided is called abstract method, and the class which contains at least one such abstract method is called abstract class (in C++, virtual functions does this). 
-```python
-from abc import ABC, abstractmethod
-class Shape(ABC):
-    def __init__(self, name):
-        self._name = name
-        
-    @abstractmethod
-    def draw(self):
-        pass
-```
+    ```python
+    from abc import ABC, abstractmethod
+    class Shape(ABC):
+        def __init__(self, name):
+            self._name = name
+            
+        @abstractmethod
+        def draw(self):
+            raise NotImplementedError("Subclasses must implement the draw method.")
+    ```
+* _**def __ call __ (self)**_: It turns the instances of the class into callable objects. In other words, you can call the instances of the class like you call any regular function.
+* _**def __ contains __ (self, member)**_: To be able to use __*in*__ operator with the object correctly.  
+* _**def __ file __ (self)**_: It returns the path relative to where the initial Python script was called. If you need the full system path, you can use os.getcwd() to get the current working directory of your executing code.
+* _**def __ repr __ (self)**_: A useful form to express "this is everything you need to know about this instance". Use repr() (or %r formatting character, equivalently) inside __ repr __() implementation. When you run <your_object>, you will get a desription that you defined in __ repr() __ method.
+* _**def __ str __ (self)**_: For "pretty print" functionality.  if __ repr __() is defined, and __ str __() is not, the object will behave as though __ str __() = __ repr __() . When writing your own classes, it’s a good idea to have a method that returns a string containing useful information about an instance of the class (like .description()). The pythonic way of to do is using __ str __() method. When you run print(<your_object>), you will get a desription that you defined in __ str __() method.
+* _**def __ len __ (self)**_: With this function definition, we can use len(class_instance). Objects that have a len() will be falsy when the result of len() is 0. It doesn’t matter if they’re lists, tuples, sets, strings, or byte strings. 
+* _**def __ getitem __ (self, key)**_: To support indexing for our object. 
+* _**def __ iter __ (self)**_: To make for loop work with our object properly. It returns an iterator that allows you to loop through the object.  
 
-* def __ len __ (self): with this function definition, we can use len(class_instance).
+  Example:
+  ```python
+  Class Numbers:
+     def __init__(self):
+          self._container = [1, 9, 2, 3]
+     def __len__(self):
+          return len(self._container)
+     def __getitem__(self, key):
+          return self._container[key]
+     def __iter__(self):
+          while self._container:
+              yield self._container.pop()
+            
+  numbers_obj = Numbers()
+  print(len(numbers_obj))
+  ```
+* ***__ dict __***: A python object saves its attributes in the class dictionary (namespace of the instance). We can simply update the attributes using the class dictionary. This can be handy when we assign/make equal an object to another object in the same type. Example: 
+  ```python
+  self.__dict__.update(other_obj.__dict__)  # make self equal to other_obj
+  ```
+* __*yield*__ is like a return statement but it doesn't end the function. It merely suspends the function, and next time the function will resume. That's called generator function. When the Python yield statement is hit, the program suspends function execution and returns the yielded value to the caller. In contrast, return stops function execution completely. When a function is suspended, the state of that function is saved. This includes any variable bindings local to the generator, the instruction pointer, the internal stack, and any exception handling. This allows you to resume function execution whenever you call one of the generator’s methods. In this way, all function evaluation picks back up right after yield.
 
-Objects that have a len() will be falsy when the result of len() is 0. It doesn’t matter if they’re lists, tuples, sets, strings, or byte strings. 
+* _**type()**_: This built-in function can be used for dynamically class creation along with its attributes (using the dictionary data type) during the run-time of the program. If you pass a single argument to the type() function, it will return the type of the object. When you pass 3 arguments (name, bases, dict) to the type() function, it creates a class dynamically and returns a new type object.
 
-* def __ getitem __ (self, key): to support indexing for our object. 
-
-* def __ iter __ (self)_ to make for loop work with our object properly. It returns an iterator that allows you to loop through the object. 
-
-* def __ contains __ (self, member): to be able to use __*in*__ operator with the object correctly.  
-
-* def __ file __ (self): returns the path relative to where the initial Python script was called. If you need the full system path, you can use os.getcwd() to get the current working directory of your executing code.
-
-* def __ repr __ (self): A useful form to express "this is everything you need to know about this instance". Use repr() (or %r formatting character, equivalently) inside __ repr __ implementation. When you run <your_object>, you will get a desription that you defined in __ repr() __ method.
-
-* def __ str __ (self): for "pretty print" functionality.  if __ repr __ is defined, and __ str __ is not, the object will behave as though __ str __ = __ repr __ . When writing your own classes, it’s a good idea to have a method that returns a string containing useful information about an instance of the class (like .description()). The pythonic way of to do is using __ str() __ method. When you run print(<your_object>), you will get a desription that you defined in __ str() __ method.
-
-* def __ call ___ (self): It turns the instances of the class into callable objects. In other words, you can call the instances of the class like you call any regular function.
-
-* __ dict __: A python object saves its attributes in the class dictionary (namespace of the instance). We can simply update the attributes using the class dictionary. This can be handy when we assign/make equal an object to another object in the same type.
-```python
-self.__dict__.update(other_obj.__dict__)  # make self equal to other_obj
-```
-
-```python
-Class Numbers:
-    def __init__(self):
-        self._container = [1, 9, 2, 3]
-    def __len__(self):
-        return len(self._container)
-    def __getitem__(self, key):
-        return self._container[key]
-    def __iter__(self):
-        while self._container:
-            yield self._container.pop()
-        
-numbers_obj = Numbers()
-print(len(numbers_obj))
-```
-
-__*yield*__ is like a return statement but it doesn't end the function. It merely suspends the function, and next time the function will resume. That's called generator function. When the Python yield statement is hit, the program suspends function execution and returns the yielded value to the caller. (In contrast, return stops function execution completely.) When a function is suspended, the state of that function is saved. This includes any variable bindings local to the generator, the instruction pointer, the internal stack, and any exception handling. This allows you to resume function execution whenever you call one of the generator’s methods. In this way, all function evaluation picks back up right after yield.
-
-_**Dynamically Class Creation along with their attributes (using the dictionary data type) during the run-time of the program:**_
-
-If you pass a single argument to the type() function, it will return the type of the object. When you pass 3 arguments (name, bases, dict) to the type() function, it creates a class dynamically and returns a new type object.
-
-name = name of the class, which becomes ___name___ attribute
-bases = tuple from which current class is derived, becomes ___bases___ attribute
-dict = a dictionary which specifies the namespaces for the class, later becomes ___dict___ attribute
+  name = name of the class, which becomes ___name___ attribute  
+  bases = tuple from which current class is derived, becomes ___bases___ attribute  
+  dict = a dictionary which specifies the namespaces for the class, later becomes ___dict___ attribute  
 
 ### Decorators
-Decorators wrap a function, modifying its behavior. Decorators allow us to wrap another function in order to extend the behavior of the wrapped function without affecting it permanently.
+Decorators wrap a function, modifying its behavior. Decorators allow us to wrap another function in order to extend the behavior of the wrapped function without affecting it permanently. Example:
 ```python
 def my_decorator(func):  # function that takes a function reference as argument
     def wrapper():
@@ -308,52 +312,34 @@ So, @my_decorator is just an easier way of saying say_hi = my_decorator(say_hi).
 
 - property() function: Property python function is mostly used in Python classes to define its properties by accepting the getter, setter, and deleter methods as arguments and returning an object of the property class. Python property() built-in function (property(fget, fset, fdel, doc)) and @property decorator is provided to easily implement the getters and setters methods in Object-Oriented Programming. 
 
-
 - partial() function: It returns a new partial callable object. functools.partial(func,*args,**kwargs), when it is called, it will behave like func called with positional arguments(*args) and keywords arguments (*kwargs). Calls to the partial object will be forwarded to func with new arguments and keywords.
-```python
-from functools import partial
-def add_int(x, y):
-    return x + y
+  ```python
+  from functools import partial
+  def add_int(x, y):
+      return x + y
+        
+  partial_add_int = partial(add_int, 23)  # 23 replaces first parameter
     
-partial_add_int = partial(add_int, 23)  # 23 replaces first parameter
-
->>> partial_add_int(7)  # returns 30
-```
-
-
+  >>> partial_add_int(7)  # returns 30
+  ```
 
 ### File Path Handling
-With paths represented by strings, it is possible, but usually a bad idea, to use regular string methods. For instance, instead of joining two paths with + like regular strings, you should use os.path.join(), which joins paths using the correct path separator on the operating system. Subsequent folders are separated by a forward slash / (Unix - Mac and Linux) or backslash \ (Windows). 
+With paths represented by strings, it is possible -but usually a bad idea- to use regular string methods. For instance, instead of joining two paths with + like regular strings, you should use os.path.join(), which joins paths using the correct path separator on the operating system. Subsequent folders are separated by a forward slash `(/)` (Unix - Mac and Linux) or backslash `(\)` (Windows). 
 
-The objects returned by pathlib.Path are either PosixPath or WindowsPath objects depending on the OS. pathlib.Path() objects have an .iterdir() method for creating an iterator of all files and folders in a directory. A little tip for dealing with Windows paths: on Windows, the path separator is a backslash, \. However, in many contexts, backslash is also used as an escape character in order to represent non-printable characters. To avoid problems, use __*raw string literals*__ to represent Windows paths. These are string literals that have an r prepended to them. In raw string literals the \ represents a literal backslash: r'C:\Users'.
+The objects returned by pathlib.Path are either PosixPath or WindowsPath objects depending on the OS. pathlib.Path() objects have an .iterdir() method for creating an iterator of all files and folders in a directory. A little tip for dealing with Windows paths: on Windows, the path separator is a backslash `(\)`. However, in many contexts, backslash is also used as an escape character in order to represent non-printable characters. To avoid problems, use __*raw string literals*__ to represent Windows paths. These are string literals that have an `r` prepended to them. In raw string literals the `(\)` represents a literal backslash: r'C:\Users'. Example:
 ```python
 import pathlib
 pathlib.Path(r'C:\Users\koray\python\file.txt')  # a path is explicitly created from its string representation
 ```
-Relative path: home/koray/Desktop
-Absolute Path: home/koray/Desktop (starts with a leading /)
+* _**Absolute Path**_: An absolute path is a complete path from the root of the file system and starts with a leading `(/)` in Unix - Mac. It does not depend on the current working directory. Example: /home/koray/Desktop
+* _**Relative path**_: A relative path points to a file or directory in relation to the current working directory. If the current working directory is /home/koray, then the relative path to the Desktop would be Desktop.
 
-* Import modules: When we import a module, Python checks multiple locations and location that it checks is within a list called sys.path. We can see this list:
-```python
-import sys
-print(sys.path)
-```
-First element is the directory containing the script that we are running, so you can always import modules from the same directory. We can append directories to this list with sys.path.append(). The better way is adding the directory to Python path environment variable (PYTHONPATH). 
-
-### Memory Management
-The default Python implementation, CPython, is actually written in the C programming language. You need something to interpret written code based on the rules in the manual, and CPython interprets Python bytecode (output is .pyc file or a __pycache__ folder). You also need something to actually execute interpreted code on a computer. CPython (or other alternatives like IronPython or PyPy) fulfills both of those requirements. It converts your Python code into instructions that it then runs on a virtual machine. The memory management algorithms and structures exist in the CPython code, in C.
-
-### Big O Complexity (Average required time complexity)
-[Time-complexity (aka "Big O" or "Big Oh") of various operations in current CPython](https://wiki.python.org/moin/TimeComplexity)
-* O(1) means constant time. For example, appending an element to a list, getting an element with an index, search an element in a set
-* O(n) means that the average time complexity will grow along with the size e.g. of a list (traversing the whole list,  all elements must be once considered). For example, inserting an element at the beginning of the list, searching for a specific element (index()), summing all elements(sum()), just for loop itself (for i in range(n)).
-O(n^2) means that as the number of elements grows, the number of lookups grows quadratically (time complexity grows on the order of O(N²)). For example,  two nested for loops, if-elif-else (O(1)-O(n)-O(n^2)) block.
-
-- collections.deque (pronounced “deck”) uses an implementation of a linked list in which you can access, insert, or remove elements from the beginning or end of a list with constant O(1) performance:
-```python
-from collections import deque
-experience = deque(maxlen=2000)  # elements are added at the end of the list and popped out from the beginning of the list when maxlen reaches
-```
+* Import modules: When we import a module, Python checks multiple locations and location that it checks is within a list called sys.path. We can see this list:  
+  ```python
+  import sys
+  print(sys.path)
+  ```  
+  First element is the directory containing the script that we are running, so you can always import modules from the same directory. We can append directories to this list with sys.path.append(). The better way is adding the directory to Python path environment variable (PYTHONPATH). 
 
 ### Pythonic Tricks
 - __*enumerate()*__ function returns a list of indices and values in a list. Use this function if you wanna walk through a list and at the same time keep track of the positions in a list. You can start your count at an offset using the optional "start" parameter:  
@@ -707,6 +693,19 @@ def testf(x: int, y: Optional[bool], z: Union[int, str], w: dict) -> Tuple[bool,
 ### Python Errors
 _**TypeError**_: Occurs in Python when you perform an illegal operation for a specific data type.
 
+### Useful codes
+```python
+def get_iter(obj) -> Iterator:
+    # Returns the Iterator of the object, or returns an Iterator with only the object itself if the object is not iterable
+    
+    # This function is useful if a function shall be able to accept an Iterable as well as a Non-iterable object, where the latter shall be treated as a tuple
+    # with only one element.
+    try:
+        yield from iter(obj)
+    except TypeError:
+        yield obj
+```
+
 ### Pip
 To create requirements.txt:
 ```bash
@@ -724,20 +723,21 @@ pip install snakeviz
 python -m cProfile -o program.prof main.py
 snakeviz .\program.prof
 ```
-    
-### Useful codes
-```python
-- def get_iter(obj) -> Iterator:
-    """Returns the Iterator of the object, or returns an Iterator with only the object itself if the object is not iterable
 
-    This function is useful if a function shall be able to accept an Iterable as well as a Non-iterable object, where the latter shall be treated as a tuple
-    with only one element.
-    """
-    try:
-        yield from iter(obj)
-    except TypeError:
-        yield obj
-```
+### Memory Management
+The default Python implementation, CPython, is actually written in the C programming language. You need something to interpret written code based on the rules in the manual, and CPython interprets Python bytecode (output is .pyc file or a __pycache__ folder). You also need something to actually execute interpreted code on a computer. CPython (or other alternatives like IronPython or PyPy) fulfills both of those requirements. It converts your Python code into instructions that it then runs on a virtual machine. The memory management algorithms and structures exist in the CPython code, in C.
+
+### Big O Complexity (Average required time complexity)
+[Time-complexity (aka "Big O" or "Big Oh") of various operations in current CPython](https://wiki.python.org/moin/TimeComplexity)
+* O(1) means constant time. For example, appending an element to a list, getting an element with an index, search an element in a set
+* O(n) means that the average time complexity will grow along with the size e.g. of a list (traversing the whole list,  all elements must be once considered). For example, inserting an element at the beginning of the list, searching for a specific element (index()), summing all elements(sum()), just for loop itself (for i in range(n)).
+O(n^2) means that as the number of elements grows, the number of lookups grows quadratically (time complexity grows on the order of O(N²)). For example,  two nested for loops, if-elif-else (O(1)-O(n)-O(n^2)) block.
+
+- collections.deque (pronounced “deck”) uses an implementation of a linked list in which you can access, insert, or remove elements from the beginning or end of a list with constant O(1) performance:
+    ```python
+    from collections import deque
+    experience = deque(maxlen=2000)  # elements are added at the end of the list and popped out from the beginning of the list when maxlen reaches
+    ```
 
 ### Differences between compiled and interpreted programming languages?
 - Compiled languages: C, C++, Java
