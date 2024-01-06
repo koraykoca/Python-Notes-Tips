@@ -8,8 +8,7 @@
 * if __ name __ == '__ main __':
 It's a check if this file is being run directly by Python or it is just being imported. If we run the script directly, run the code under this conditional. If we import this module, doesn't run it "implicitly" (otherwise every module we imported would be run by Python automatically because we imported it). Whenever Python runs a file, it first sets a few special variables before even runs any code, and __ name __ is one of those special variables. When Python runs a pyhton file directly, it sets __ name __ == __ main __. When we import a module, Python sets __ name __ to the name of the file. 
 
-
-### Python Style Convention
+### Python style convention
 * Variable, Object(Instance), Module names: lowercase_underscore
 * Class names: CapWords
 * Class member names, which are used only in the class (for internal use, not for external use) (private, protected members): _private_member
@@ -42,7 +41,32 @@ in module2.py, both imports below work:
     ```
 Ensure that you are running the script from the correct working directory. The working directory should be the directory containing the package directory (python package/subpackage/submodule/module2.py)
 
-### Built-in Functions, Data Structures
+### Useful Python packages
+- [pre-commit](https://pre-commit.com/): This tool is utilized to enforce consistent coding styles and maintain code quality through pre-commit hooks. To integrate pre-commit into your workflow, add a .pre-commit-config.yaml configuration file to your repository (a sample configuration is provided within this repository). Then, execute the commands below to install the pre-commit hook into your Git repository.
+    ```bash
+    pip install pre-commit
+    pre-commit install
+    ```
+
+- [snakeviz](https://jiffyclub.github.io/snakeviz/): Graphical viewer for the output of Python’s cProfile module
+    ```bash
+    pip install snakeviz
+    python -m cProfile -o program.prof main.py
+    snakeviz .\program.prof
+    ```
+
+- [pipreqs](https://github.com/bndr/pipreqs): To generate requirements.txt file for a directory in the project (repo in a repo)
+    ```bash
+    pip install pipreqs
+    python -m  pipreqs.pipreqs --encoding=utf8
+    ```
+
+    Note: To generate requirements.txt file for the whole project:
+    ```bash
+    pip freeze > requirements.txt
+    ```
+    
+### Built-in functions, data structures, libraries
 * [Python’s Standard Library:](https://docs.python.org/3/library/functions.html) By default, Python comes with a lot of functionality that’s just an import statement away. Some examples:
     * type(object_name): get type of the object
     * isinstance(object_name, object_type): to test type of an object
@@ -150,6 +174,18 @@ With bitwise operator, you can check if a number is odd or even. The idea is to 
 ```python
     if (x & 1) != 0):   #  it compares the digits according to size of the right argument (in this case it's just 1, so it just compares the last digit of x)
         # x is odd
+```
+
+### Type/Function Annotations
+When a function parameter can be one of several types, we can use Union (also called a sum type). For example, Union[int, str] means it could be an int; or it could be a str; but it cannot be a float, or a list, or another dict, or anything other than an int or str.
+
+When a function returns multiple values, we can use Tuple. For example, -> Tuple[bool, str] means function returns a bool and a string (as tuple, actually, you are always returning one object). 
+
+When a parameter is optional (a Python optional argument is an argument with a default value), you can use "Optional" as type annotation. For example, Optional[int]
+```python
+from typing import List, Tuple, Union, Optional
+def testf(x: int, y: Optional[bool], z: Union[int, str], w: dict) -> Tuple[bool, int]
+    pass
 ```
 
 ### Object-Oriented Programming (OOP)
@@ -677,18 +713,6 @@ Sometimes None can be useful in combination with short-circuit evaluation in ord
         return len(list_in or [])  # an empty list won’t be created if list_in is a non-empty list, since "or" will short-circuit before it evaluates []
 ```
 This example takes advantage of the falsiness of None and the fact that or not only short-circuits but also returns the last value to be evaluated.
-    
-### Type/Function Annotations
-When a function parameter can be one of several types, we can use Union (also called a sum type). For example, Union[int, str] means it could be an int; or it could be a str; but it cannot be a float, or a list, or another dict, or anything other than an int or str.
-
-When a function returns multiple values, we can use Tuple. For example, -> Tuple[bool, str] means function returns a bool and a string (as tuple, actually, you are always returning one object). 
-
-When a parameter is optional (a Python optional argument is an argument with a default value), you can use "Optional" as type annotation. For example, Optional[int]
-```python
-from typing import List, Tuple, Union, Optional
-def testf(x: int, y: Optional[bool], z: Union[int, str], w: dict) -> Tuple[bool, int]
-    pass
-```
 
 ### Python Errors
 _**TypeError**_: Occurs in Python when you perform an illegal operation for a specific data type.
@@ -704,24 +728,6 @@ def get_iter(obj) -> Iterator:
         yield from iter(obj)
     except TypeError:
         yield obj
-```
-
-### Pip
-To create requirements.txt:
-```bash
-# for the whole project
-pip freeze > requirements.txt
-# for a directory in the project (repo in a repo)
-pip install pipreqs
-python -m  pipreqs.pipreqs --encoding=utf8
-```
-
-### Python Packages
-- [snakeviz](https://jiffyclub.github.io/snakeviz/): graphical viewer for the output of Python’s cProfile module
-```bash
-pip install snakeviz
-python -m cProfile -o program.prof main.py
-snakeviz .\program.prof
 ```
 
 ### Memory Management
