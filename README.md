@@ -102,8 +102,8 @@ export PYTHONPATH=$PYTHONPATH:<path>
     * `isinstance(object_name, object_type)`: to test type of an object
     * `issubclass(object_type, object_type)`: to test whether a class is a subclass of another class
     * `isnumeric()`: to check whether all the characters of the string are numeric characters or not 
-    * `vars()`: returns the `__dict__` attribute of an object
-    * `sorted()`: By default, `sorted()` sorts the input in ascending order, and the reverse keyword argument causes it to sort in descending order. It’s worth knowing about the optional keyword argument key that lets you specify a function (usually lambda) that will be called on every element prior to sorting. Adding a function allows custom sorting rules,           which are especially helpful if you want to sort more complex data types e.g. dictionaries. Example:
+    * `vars()`: returns the `____` attribute of an object
+    * `sorted()`: By default, `sorted()` sorts the input in ascending order, and the reverse keyword argument causes it to sort in descending order. It’s worth knowing about the optional keyword argument key that lets you specify a function (usually lambda) that will be called on every element prior to sorting. Adding a function allows custom sorting rules,           which are especially helpful if you want to sort more complex data types e.g. ionaries. Example:
         ```python
         cars = [{"Car": "Pagani", "power": 850},
                 {"Car": "Porsche", "power": 450},
@@ -196,6 +196,16 @@ struct foo x = { 9, 'k', 5.3 };
 x = (9, 'k', 5.3)
 ```
 
+* Caching function results
+You can cache result of a function when you have repeated calls. If you call the same function with the same arguments a lot of times, you can cache the result, so the function will be called once in the end. You can do that manually or wrap the function using `lru_cache` decorator. What it does is to put a dictionary in a function and strore arguments value pairs.
+```python
+from functools import lru_cache
+
+@lru_cache(maxsize=None)  # You can also define maximum size of a cache
+def expensive_function(args):
+    pass
+```
+  
 * _**requests library**_:
 
 It allows us to make http requests to get information from websites. For example, `requests.get` is used to go to a website and pull down the required informations from the website. If it returns ok, then we can get the information with `text()` method. Example:
@@ -370,10 +380,11 @@ Whenever you call a Python class to create a new instance, you trigger Python’
 ### Decorators
 Decorators wrap a function, modifying its behavior. Decorators allow us to wrap another function in order to extend the behavior of the wrapped function without affecting it permanently. Example:
 ```python
-def my_decorator(func):  # function that takes a function reference as argument
+def my_decorator(original_func):  # function that takes a function reference as argument
+    @wraps(original_func)  # This is optional but highly recommended as it ensures that __repr__ and other things still map to the original function
     def wrapper():
         print("before function")
-        func()
+        original_func()
         print("after function")
     return wrapper  # returns a function reference
     
@@ -385,10 +396,11 @@ say_hi = my_decorator(say_hi)  # decoration happens here, say_hi now points to t
 
 Syntactic Sugar: The way we decorated `say_hi()` above is a little clunky. The decoration gets a bit hidden away below the definition of the function. Instead, Python allows you to use decorators in a simpler way with the `@` symbol, sometimes called the “pie” syntax.
 ```python
-def my_decorator(func):  # function that takes a function reference as argument
+def my_decorator(original_func):  # function that takes a function reference as argument
+    @wraps(original_func)
     def wrapper():
         print("before function")
-        func()
+        original_func()
         print("after function")
     return wrapper  # returns a function reference
 
