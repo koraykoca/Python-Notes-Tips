@@ -467,6 +467,14 @@ b = (3, 5, 1)
 msg = 'Update available' if a > b else 'Up to date'  # inline if statement (for sequence comparision)
 ```
 
+-  You can store properties of an object for later access and still affect the original. This can be useful to make code more readable.
+```python
+list_with_very_very_long_name = [1, 2, 3]
+add_to_list = list_with_very_very_long_name.append
+
+add_to_list(4)
+```  
+
 - We can use `get()` function when you wanna get a value of a key from a dictionary, but you are not 100% sure that that key is in the dictionary, you can return a default value for it and prevent happening the `Keyerror`. 
 ```python
     myValue = myDict.get('myKey', 'defaultValue')  # if myKey is not in the myDict dictionary, return defaultValue
