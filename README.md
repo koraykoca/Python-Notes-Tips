@@ -139,15 +139,15 @@ It is possible to define a function that accepts any number of optional argument
 
 When the asterisk or star symbol `*` is used immediately before a sequence, it unpacks the sequence into its individual components. When a sequence such as a list is unpacked, its items are extracted and treated as individual objects. There is nothing special about the name args. It is the preceding `*` that gives this parameter its particular properties.  Often, it’s better to use a parameter name that suits your needs best to make the code more readable. Example:
 ```python
-def add_items(part_list, *items_name):
-    for item_name in items_name:
+def add_items(part_list, *items_names):
+    for item_name in items_names:
         part_list[item_name] = 1
     return part_list
     
 part_list = {}
 part_list = add_items(part_list, "screw", "nut", "washer", "oil")
 ```
-When you display the data type, you can see that `item_names` above is a tuple. Therefore, all the additional arguments are assigned as items in the tuple `item_names`. You can then use this tuple within the function definition as we did in the main definition of `add_items()` above, in which you’re iterating through the tuple `item_names` using a for loop.
+When you display the data type, you can see that `items_names` above is a tuple. Therefore, all the additional arguments are assigned as items in the tuple `items_names`. You can then use this tuple within the function definition as we did in the main definition of `add_items()` above, in which you’re iterating through the tuple `items_names` using a for loop.
 
 When you define a function with parameters, you have a choice of calling the function using either non-keyword arguments or keyword arguments. Example:
 ```python
@@ -169,6 +169,15 @@ part_list = add_items(part_list, screw=1, nut=2, washer=2, oil=1)
 ```
 
 Earlier, we learned that args is a tuple, and the optional non-keyword arguments used in the function call are stored as items in the tuple. The optional keyword arguments are stored in a dictionary, and the keyword arguments are stored as key-value pairs in this dictionary.
+
+You can force functions to use named arguments with `*` to avoid argument order confusion. It will require keyword arguments for the parameters after `*`.
+```python
+def update_name(*, input_str: str, output_str: str):
+    pass
+
+# You have to call this function with keyword arguments, because it takes 0 positional arguments (there is no parameter before `*`).
+update_name(input_str="input", output_str="output")
+```
 
 * _**Python lists and tuples**_:
 
