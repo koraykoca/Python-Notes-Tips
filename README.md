@@ -725,6 +725,14 @@ x = [1, 9, 2, 3]
 y = x.copy  # Both variables will have the same value, but each will be stored at a different memory address. Only y = x would make y a reference to x.
 ```
 
+### `:=` walrus operator 
+It allows to assign values to variables in conditionals. In the example below, when the end of the file is reached, file.readline() returns an empty string "", which is False in a boolean context. At this point, the while loop ends.
+```python
+with open('myfile.txt', 'r') as file:
+    while (line := file.readline()):  # read a line from the file on each iteration and assign it to line until the end of the file is reached
+        print(line)
+```
+
 ### Python Errors
 _**TypeError**_: Occurs in Python when you perform an illegal operation for a specific data type.
 
@@ -761,5 +769,22 @@ O(n^2) means that as the number of elements grows, the number of lookups grows q
 - Interpreted languages: Python, JavaScript
 
 - Compiled programming languages are more performant but are harder to port to different CPU architectures and operating systems. Interpreted programming languages are more portable, but their performance is much worse than that of compiled languages. Then there are programming languages such as Python that do a mix of both compilation and interpretation. Specifically, Python is first compiled into an intermediate bytecode, which is then interpreted by CPython. This makes the code perform better than code written in a purely interpreted programming language, and it maintains the portability advantage. However, the performance is still nowhere near that of the compiled version. The reason is that the compiled code can do a lot of optimizations that just aren’t possible with bytecode. That’s where the just-in-time (JIT) compiler e.g. PyPy comes in. It tries to get the better parts of the both worlds by doing some real compilation into machine code and some interpretation. However, depending on your program, you may get some noticeable speed improvements. PyPy works best with pure Python applications and long-running programs. When you run a script with PyPy, it does a lot of things to make your code run faster.  If the script is too small, then the overhead will cause your script would run slower than in CPython. On the other hand, if you have a long-running script, then that overhead can pay significant performance dividends. Moreover, whenever you use a C extension module, it runs much slower than in CPython (because not fully supported). PyPy compiles Python code, but it isn’t a compiler for Python code. Because of the inherent dynamism of Python, it’s impossible to compile Python into a standalone binary and reuse it. PyPy is a runtime interpreter that is faster than a fully interpreted language, but it’s slower than a fully compiled language such as C.
+
+### Debugging
+- You can print names of the variables together with their values in format strings
+```python
+    var: int = 23
+    print(f"{var=}")  # This prints var=23
+
+    default_value: int = 19
+    test_dict = dict.fromkeys(["key1", "key2"], default_value)
+    print(f"{dictionary=}")  # This prints dictionary={'key1': 19, 'key2': 19}
+```
+
+- There is also rich library that allows you add color to the print statements 
+```python
+    import rich;
+    rich.print("[red]This message will be printed in red.")
+```
 
 #### Reference: [Python Documentation](https://docs.python.org/3/)
